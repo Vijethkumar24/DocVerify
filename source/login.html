@@ -85,7 +85,8 @@
 
                 function updateUI(account) {
                     if (account) {
-                        accountDetailsDiv.textContent = "Connected with address: ${account}";
+                        console.log(account);
+                        accountDetailsDiv.textContent = "Connected with address"+account;
                         // Perform other UI updates or actions here
                     } else {
                         accountDetailsDiv.textContent = "Failed to connect to MetaMask.";

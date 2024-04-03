@@ -8,9 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/assets/styles/uploadDoc.css">
 </head>
-
 <body>
-    
     <!--Main Navigation-->
     <header>
         <!-- Navbar -->
@@ -39,7 +37,7 @@
                             <i class="fa-solid fa-school fa-2x"></i>
                             <h4 class="card-title">Educational Documents</h4>
                             <p class="card-text">Upload documents related to education.</p>
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#uploadModal1">Upload File</button>
+                            <button class="btn btn-primary" id="uploadModalBtn1">Upload File</button>
                         </div>
                     </div>
                 </div>
@@ -51,7 +49,7 @@
                             <i class="fa-solid fa-building-columns fa-2x"></i>
                             <h4 class="card-title">Financial Documents</h4>
                             <p class="card-text">Upload financial documents.</p>
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#uploadModal2">Upload File</button>
+                            <button class="btn btn-primary" id="uploadModalBtn2">Upload File</button>
                         </div>
                     </div>
                 </div>
@@ -63,231 +61,64 @@
                             <i class="fa-solid fa-building fa-2x"></i>
                             <h4 class="card-title">Governmental Documents</h4>
                             <p class="card-text">Upload governmental documents.</p>
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#uploadModal3">Upload File</button>
+                            <button class="btn btn-primary" id="uploadModalBtn3">Upload File</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div id="radius-shape-2" class="position-absolute rounded-circle shadow-5-strong"></div>
-
     </header>
     <!--Main Navigation-->
 
-    <!-- Modal 1 -->
-    <div class="modal fade" id="uploadModal1" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel1" aria-hidden="true">
+    <!-- Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel1">Upload File</h5>
+                    <h5 class="modal-title" id="uploadModalLabel">Upload File</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="input-file-now-custom" class="file-upload" data-height="500" />
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="password1">Password:</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="userpassword" name="password1">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword1">
-                                <i class="fas fa-eye"></i>
-                            </button>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="file-upload-wrapper">
+                            <input type="file" name="document" id="input-file-now-custom" class="file-upload" data-height="500">
+
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="password1">Password:</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="userpassword" name="password1">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword1">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="password2">Confirm Password:</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="userConfirmPass"  name="password2">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword2">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group mt-3">
-                        <label for="password2">Confirm Password:</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="userConfirmPass"  name="password2">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword2">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
                     </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="disclaimer1">
-                        <label class="form-check-label" for="disclaimer1">I hereby conclude that all the content of this document is read and correct. If not, it's my responsibility.</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" >Upload</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-
-    <!-- Modal 2 -->
-    <div class="modal fade" id="uploadModal2" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel2" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel2">Upload File</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="input-file-now-custom" class="file-upload" data-height="500" />
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="password1">Password:</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="userpassword" name="password1">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword1">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="password2">Confirm Password:</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="userConfirmPass"  name="password2">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword2">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="disclaimer2">
-                        <label class="form-check-label" for="disclaimer2">I hereby conclude that all the content of this document is read and correct. If not, it's my responsibility.</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button"  class="btn btn-primary" >Upload</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal 3 -->
-    <div class="modal fade" id="uploadModal3" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel3" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel3">Upload File</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="input-file-now-custom" class="file-upload" data-height="500" />
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="password1">Password:</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="userpassword" name="password1">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword1">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="password2">Confirm Password:</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="userConfirmPass" name="password2">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword2">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="disclaimer3">
-                        <label class="form-check-label" for="disclaimer3">I hereby conclude that all the content of this document is read and correct. If not, it's my responsibility.</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button"  class="btn btn-primary" >Upload</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        function goToPreviousPage() {
-            window.history.back(); // This will navigate to the previous page
-        }
-        // function uploadFile()
-        // {
-        //    const password = document.getElementById("userpassword").value;
-        //    const confirmPass = document.getElementById("userConfirmPass").value;
-        //    const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{10,}$/;
-        //    const img =document.getElementById("input-file-now-custom").value;
-        //     if (password !== confirmPass) {
-        //         alert("Passwords do not match.");
-        //          return;
-        //     }
-      
-
-
-        //     if (!passwordRegex.test(password)) {
-        //     alert(
-        //     "Password should be minimum 10 characters long, start with a capital letter, contain at least  one special character (!@#$%^&*), and at least one digit."
-        //          );
-        //    return console.log(img);
-        
-        // }
-        
-//     document.addEventListener("DOMContentLoaded", function() {
-//     document.getElementById('togglePassword1').addEventListener('click', function () {
-//         const password1 = document.getElementById('userpassword');
-//         const type = password1.getAttribute('type') === 'password' ? 'text' : 'password';
-//         password1.setAttribute('type', type);
-//         this.querySelector('i').classList.toggle('fa-eye-slash');
-//     });
-
-//     document.getElementById('togglePassword2').addEventListener('click', function () {
-//         const password2 = document.getElementById('userConfirmPass');
-//         const type = password2.getAttribute('type') === 'password' ? 'text' : 'password';
-//         password2.setAttribute('type', type);
-//         this.querySelector('i').classList.toggle('fa-eye-slash');
-//     });
-// });
-
-//   function uploadFile() {
-//     var password1 = document.getElementById("password-1").value;
-//     var password2 = document.getElementById("password-2").value;
-//     var password3 = document.getElementById("password-3").value; // This line causes the error
-// // This line causes the error
-
-
-//   // Password validation rules
-//   var passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{10,}$/;
-
-//   if (password1 !== password2 || password2 !== password3) {
-//     alert("Passwords do not match.");
-//     return;
-//   }
-
-//   if (!passwordRegex.test(password1)) {
-//     alert(
-//       "Password should be minimum 10 characters long, start with a capital letter, contain at least one special character (!@#$%^&*), and at least one digit."
-//     );
-//     return;
-//   }
-
-  // If password passes validation, proceed with upload
-  // You can add your upload logic here
-//   console.log("Upload logic goes here");
-// }
-
-
-    </script>
-    <script src="/assets/scripts/passWordValidation.js"></script>
-    <!--Scripts-->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    
-    
-    </script>
-   
-   
+  
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script src = "assets/scripts/passWordValidation.js"></script>
 </body>
-
 </html>
