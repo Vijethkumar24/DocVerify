@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Add any additional CSS files here -->
 </head>
+
 <body>
+   
     <!-- Section: Design Block -->
     <section class="background-radial-gradient" style="width: 100vw; height: 100vh;">
         <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-6">
@@ -20,10 +22,10 @@
                         <span style="color: hsl(218, 81%, 75%)">With Our Help</span>
                     </h2>
                     <p class="mb-3 opacity-70" style="color: hsl(218, 81%, 85%)">
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        Temporibus, expedita iusto veniam atque, magni tempora mollitia
-                        dolorum consequatur nulla, neque debitis eos reprehenderit quasi
-                        ab ipsum nisi dolorem modi. Quos?
+                        Protect your documents from counterfeiting with blockchain. Our solution encrypts and hashes files for tamper-proof
+                        verification. Smart contracts ensure seamless verification. Enter the document's ID to instantly validate its
+                        integrity against the blockchain-stored hash. Trust in our secure platform for document authenticity and peace of
+                        mind.
                     </p>
                 </div>
                 <div class="col-lg-6 mb-6 mb-lg-0 position-relative">
@@ -36,9 +38,11 @@
                         <div class="card-body px-4 py-5 px-md-5">
                             <form>
                                 <!-- MetaMask logo -->
-                                <img src="/assets/images/MetaMask_Fox.svg.png" alt="MetaMask Logo" style="width: 250px;height: 250px;">
+                                <div id="fox-container">
+                                    <img id="fox-image" src="/assets/images/MetaMask_Fox.svg.png" alt="MetaMask Logo">
+                                </div>
                                 <!-- Connect MetaMask button -->
-                                <button id="connectButton" type="button" class="btn btn-primary btn-block mb-4">
+                                <button id="connectButton"  type="button" class="btn btn-primary btn-block mb-4">
                                     Connect MetaMask Wallet</button>
                                 <div id="accountDetails"></div>
                                 <!-- Link to MetaMask support -->
@@ -52,6 +56,12 @@
                 </div>
             </div>
         </div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
     </section>
     <!-- Section: Design Block -->
     
@@ -60,49 +70,6 @@
     
     <!-- Add your custom scripts here -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.6/web3.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Check if MetaMask is installed and available
-            if (window.ethereum) {
-                const web3 = new Web3(window.ethereum);
-                const connectButton = document.getElementById('connectButton');
-                const accountDetailsDiv = document.getElementById('accountDetails');
-
-                async function fetchAccountDetails() {
-                    try {
-                        // Request account access
-                        await window.ethereum.request({ method: 'eth_requestAccounts' });
-                        // Accounts now exposed
-                        const accounts = await web3.eth.getAccounts();
-                        const userAddress = accounts[0];
-                        console.log("Connected with address:", userAddress);
-                        return userAddress;
-                    } catch (error) {
-                        console.error(error);
-                        return null;
-                    }
-                }
-
-                function updateUI(account) {
-                    if (account) {
-                        console.log(account);
-                        accountDetailsDiv.textContent = "Connected with address"+account;
-                        // Perform other UI updates or actions here
-                    } else {
-                        accountDetailsDiv.textContent = "Failed to connect to MetaMask.";
-                    }
-                }
-
-                connectButton.addEventListener('click', async () => {
-                    const userAddress = await fetchAccountDetails();
-                    updateUI(userAddress);
-                    // Trigger other actions here based on the connected account
-                    // For example, interact with smart contracts, update UI, etc.
-                });
-            } else {
-                console.log("MetaMask not detected.");
-            }
-        });
-    </script>
+    <script src="assets/scripts/connectWithWallet.js"></script>
 </body>
 </html>

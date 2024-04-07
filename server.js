@@ -1,6 +1,7 @@
 import express from "express";
 import multer from "multer";
 import * as IPFS from "ipfs-http-client";
+import crypto from "crypto";
 import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -16,13 +17,13 @@ app.use(express.json());
 // Serve static content from the "public" directory
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-//serve the file to express
+// Serve the file to express
 app.use(express.static(path.join(__dirname, "source")));
 app.use(express.static(path.join(__dirname, "assets/images")));
 app.use(express.static(path.join(__dirname, "assets/styles")));
 app.use(express.static(path.join(__dirname, "assets/scripts")));
 
-const port = 3000;
+const port = 3001;
 app.use(express.json());
 
 const ipfs = IPFS.create({ host: "localhost", port: 5001, protocol: "http" });
@@ -93,6 +94,18 @@ async function decryptData(encryptedData, key, iv) {
   }
 }
 
+// Function to calculate the SHA-256 hash of a file
+async function calculateHash(filePath) {
+  try {
+    const fileContent = await readFile(filePath);
+    const hash = crypto.createHash("sha256").update(fileContent).digest("hex");
+    return hash;
+  } catch (error) {
+    console.error("Error calculating hash:", error);
+    throw error;
+  }
+}
+
 app.post("/retrieve", async (req, res) => {
   const cid = req.body.cid;
   const password = req.body.password;
@@ -130,30 +143,60 @@ app.post("/uploads", upload.single("document"), async (req, res) => {
   const password = req.body.password1; // Corrected to match form field name
 
   try {
+    // Calculate the hash of the uploaded document
+    const hash = await calculateHash(file.path);
+
     const fileData = await readFile(file.path);
     const key = deriveKeyFromPassword(password);
     const { iv, encryptedData } = await encryptData(fileData, key);
+
+    // Store the hash along with the encrypted data on IPFS
     const { cid } = await ipfs.add(encryptedData);
 
     // Logging info
     console.log(cid);
     console.log(iv.toString("hex"));
     console.log(key);
+    console.log("Hash of the uploaded document:", hash);
 
-    res.json({ cid, iv: iv.toString("hex") }); // Send IV in hex format
+    res.json({ cid, iv: iv.toString("hex"), hash }); // Send IV and hash in response
   } catch (error) {
     console.error("Error uploading and encrypting file:", error);
     res.status(500).send("Error uploading and encrypting file");
   }
 });
 
+let userAddress;
 // Serve index.html when root URL is accessed
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "source", "index.html"));
+app.post("/", (req, res) => {
+  userAddress = req.body.userAddress;
+  console.log(userAddress);
+  if (userAddress) {
+    // Redirect to the home page after fetching the account address
+    res.redirect("/home");
+  } else {
+    // Handle the case where userAddress is not present
+    res.status(400).send("User address not found.");
+  }
+});
+app.get("/getWalletAddress", (req, res) => {
+  // Replace this with your actual logic to fetch the wallet address
+  const walletAddress = userAddress; // Example wallet address
+  // Send the wallet address data as JSON response
+  res.json({ walletAddress });
 });
 
-// Serve uploadDoc.html when /uploadDoc.html URL is accessed
-app.get("/uploadDoc.html", (req, res) => {
+app.get("/", (req, res) => {
+  // Render the home page
+  res.sendFile(path.join(__dirname, "source", "login.html"));
+});
+app.get("/home", (req, res) => {
+  // Render the home page
+  res.sendFile(path.join(__dirname, "source", "home.html"));
+});
+
+// Serve uploadDoc.html when /uploadDoc URL is accessed
+app.get("/uploadDoc", (req, res) => {
   res.sendFile(path.join(__dirname, "source", "uploadDoc.html"));
 });
 

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/assets/styles/homepage.css">
 </head>
 
-<body>
+<body onload="loadWalletAddress()">
   <!--Main Navigation-->
   <header>
 
@@ -44,8 +44,20 @@
           </ul>
         </div>
       </div>
+       <!-- PROFILE FOR MOBILE VIEW-->
+       <div class="collapse navbar-collapse" id="navbarMobile">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <span id="walletAddress" class="nav-link"></span>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Profile Display and Update Section -->
+      
+      
+      
     </nav>
-
     <!-- Desktop navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark d-none d-lg-block" style="z-index: 2000;">
       <div class="container-fluid">
@@ -59,23 +71,26 @@
               <a class="nav-link" aria-current="page" href="#intro">Home</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" aria-current="page" href="#intro">Verifyed Documents</a>
+              <a class="nav-link" aria-current="page" href="#intro">Verified Documents</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" rel="nofollow" target="_blank"
-                onclick="scrollByPercentage(350, event)">Contact Us</a>
+              <a class="nav-link" href="#" rel="nofollow" target="_blank" onclick="scrollByPercentage(350, event)">Contact Us</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#" target="_blank" onclick="scrollByPercentage(250, event)">About Us</a>
             </li>
-
-
+          </ul>
+          <!-- Wallet Address for Desktop -->
+        </div>
+        <div class="collapse navbar-collapse" id="navbarDesktop">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+            <span id="walletAddressDesktop" class="nav-link"></span>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
-
-
     <!-- Navbar -->
     <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
 
@@ -175,7 +190,7 @@
         <div class="row">
           <div class="col-md-6 gx-5 mb-4">
             <div class="bg-image hover-overlay shadow-2-strong" data-mdb-ripple-init data-mdb-ripple-color="light">
-              <img src="/assets/images/blockChain__2_-removebg-preview.png" class="img-fluid" style="margin-top:1vh;" />
+              <img src="/assets/images/blockChain__2_-removebg-preview.png" class="img-fluid float-animation" style="margin-top:1vh;" />
 
 
               <a href="#!">
@@ -448,15 +463,15 @@
       <div class="col-md-3 text-center">
         <ul class="list-unstyled mb-0">
           <li><i class="fas fa-map-marker-alt fa-2x"></i>
-            <p>San Francisco, CA 94126, USA</p>
+            <p></p>
           </li>
 
           <li><i class="fas fa-phone mt-4 fa-2x"></i>
-            <p>+ 01 234 567 89</p>
+            <p></p>
           </li>
 
           <li><i class="fas fa-envelope mt-4 fa-2x"></i>
-            <p>contact@mdbootstrap.com</p>
+            <p></p>
           </li>
         </ul>
       </div>
@@ -473,7 +488,7 @@
   <footer class="bg-light text-lg-start">
     <div class="py-4 text-center">
       <a role="button" class="btn btn-primary btn-lg m-2" data-mdb-ripple-init
-        href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA" rel="nofollow" target="_blank">
+        href="#" rel="nofollow" target="_blank">
         Why us?
       </a>
       <a role="button" class="btn btn-primary btn-lg m-2" data-mdb-ripple-init href="#" target="_blank">
@@ -485,19 +500,19 @@
 
     <div class="text-center py-4 align-items-center">
       <p>Follow Us on social media</p>
-      <a href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA" class="btn btn-primary m-1" role="button"
+      <a href="#" class="btn btn-primary m-1" role="button"
         data-mdb-ripple-init rel="nofollow" target="_blank">
         <i class="fab fa-youtube"></i>
       </a>
-      <a href="https://www.facebook.com/mdbootstrap" class="btn btn-primary m-1" role="button" rel="nofollow"
+      <a href="#" class="btn btn-primary m-1" role="button" rel="nofollow"
         data-mdb-ripple-init target="_blank">
         <i class="fab fa-facebook-f"></i>
       </a>
-      <a href="https://twitter.com/MDBootstrap" class="btn btn-primary m-1" role="button" rel="nofollow"
+      <a href="#" class="btn btn-primary m-1" role="button" rel="nofollow"
         data-mdb-ripple-init target="_blank">
         <i class="fab fa-twitter"></i>
       </a>
-      <a href="https://github.com/mdbootstrap/mdb-ui-kit" class="btn btn-primary m-1" role="button" rel="nofollow"
+      <a href="#" class="btn btn-primary m-1" role="button" rel="nofollow"
         data-mdb-ripple-init target="_blank">
         <i class="fab fa-github"></i>
       </a>
@@ -506,7 +521,7 @@
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
       © 2020 Copyright:
-      <a class="text-dark" href="https://mdbootstrap.com/">#########</a>
+      <a class="text-dark" href="#">#########</a>
     </div>
     <!-- Copyright -->
   </footer>
@@ -514,6 +529,18 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script>
+    function loadWalletAddress() {
+      fetch("/getWalletAddress")
+        .then(response => response.json())
+        .then(data => {
+          const walletAddress = data.walletAddress;
+          document.getElementById("walletAddress").innerText = walletAddress;
+          document.getElementById("walletAddressDesktop").innerText = walletAddress;
+        })
+        .catch(error => console.error("Error:", error));
+    }
+  </script>
 
 </body>
 

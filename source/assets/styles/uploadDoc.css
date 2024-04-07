@@ -3,9 +3,9 @@
     #introCarousel {
       margin-top: -58.59px;
     }
-    .card:hover{
+    /* .card:hover{
       transform: scale(1.1);
-    }
+    } */
     .card {
         height: 20rem;
      /* Add margin to the right and bottom of each card */
@@ -16,6 +16,7 @@
         margin: auto; /* Center the card horizontally */
         margin-top: auto; /* Center the card vertically */
         margin-bottom: auto; /* Center the card vertically */
+      
     }
     .card-body {
         text-align: center; 
@@ -76,14 +77,14 @@
   }
   
   
-  .container-fluid a:hover {
+  /* .container-fluid a:hover {
     font-size: large;
   }
   
   .carousel-item a:hover {
       font-size: large;
       color: #50aedd;
-  }
+  } */
   
   .carousel-item a:after {    
       background: none repeat scroll 0 0 transparent;
@@ -188,5 +189,23 @@
         background-color: #b30000;
 }
 
-  
+@keyframes floatUpDown {
+  0% {
+      transform: translateY(0);
+  }
+  50% {
+      transform: translateY(-10px);
+  }
+  100% {
+      transform: translateY(0);
+  }
+}
+
+#radius-shape-1 {
+  animation: floatUpDown 2s infinite ease-in-out;
+}
+
+#radius-shape-2 {
+  animation: floatUpDown 3s infinite ease-in-out;
+}
  
