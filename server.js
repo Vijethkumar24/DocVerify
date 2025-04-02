@@ -261,7 +261,7 @@ app.post("/uploads", upload.single("document"), async (req, res) => {
 
     // Logging info
     const filebaseBucket = "myipfsbucket";
-    const filebaseKey = `documents/${fileName}`;
+    const filebaseKey = `${Date.now()}-${fileName.replace(/\s+/g, "_")}`;
     const uploadParams = {
       Bucket: filebaseBucket,
       Key: filebaseKey,
@@ -295,6 +295,7 @@ app.post("/uploads", upload.single("document"), async (req, res) => {
 app.post("/", (req, res) => {
   userAddress = req.body.userAddress;
   req.session.userAddress = userAddress;
+  console.log(userAddress);
   if (userAddress) {
     // Redirect to the home page after fetching the account address
     res.redirect("/home");
