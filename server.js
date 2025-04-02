@@ -14,12 +14,11 @@ import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import * as RedisStore from "connect-redis";
-
-import { createClient } from "ioredis";
+import Redis from "ioredis";
 
 dotenv.config();
 //Add your Sepolia
-const redisClient = new createClient(
+const redisClient = new Redis(
   process.env.REDIS_URL || "redis://localhost:6379"
 );
 
