@@ -8,7 +8,12 @@ import { dirname } from "path";
 import path from "path";
 import { readFile } from "fs/promises";
 import DocumentRegistryABI from "./build/contracts/DocumentRegistry.json" assert { type: "json" };
-import AWS from "aws-sdk";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
+
 import session from "express-session";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
@@ -40,7 +45,7 @@ app.use(
     }),
     resave: false,
     saveUninitialized: false,
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || "fallback_secret",
     cookie: { secure: process.env.NODE_ENV === "production" },
   })
 );
@@ -62,7 +67,6 @@ app.use(
 );
 
 //generate secure key for login
-const ipfs = IPFS.create({ host: "localhost", port: 5001, protocol: "http" });
 
 const isLoggedIn = (req, res, next) => {
   if (req.session.userAddress) {
@@ -85,12 +89,14 @@ app.use(express.json());
 
 const upload = multer({ dest: "uploads/" });
 
-const filebaseClient = new AWS.S3({
-  accessKeyId: process.env.FILEBASE_ACCESS_KEY, // Your Filebase Access Key
-  secretAccessKey: process.env.FILEBASE_SECRET_KEY, // Your Filebase Secret Key
-  endpoint: "https://s3.filebase.com", // Filebase endpoint
-  s3ForcePathStyle: true, // Required for Filebase
-  signatureVersion: "v4", // Signature version for requests
+const filebaseClient = new S3Client({
+  region: "us-east-1",
+  endpoint: "https://s3.filebase.com",
+  credentials: {
+    accessKeyId: process.env.FILEBASE_ACCESS_KEY,
+    secretAccessKey: process.env.FILEBASE_SECRET_KEY,
+  },
+  forcePathStyle: true,
 });
 function deriveKeyFromPassword(password) {
   const passwordBuffer = Buffer.from(password, "utf-8");
@@ -145,18 +151,6 @@ async function retrieveDataFromFilebase(cid) {
     return Buffer.from(file.Body);
   } catch (error) {
     console.error("Error retrieving data from Filebase:", error);
-    throw error;
-  }
-}
-async function retrieveDataFromIPFS(cid) {
-  const chunks = [];
-  try {
-    for await (const chunk of ipfs.cat(cid)) {
-      chunks.push(chunk);
-    }
-    return Buffer.concat(chunks);
-  } catch (error) {
-    console.error("Error retrieving data from IPFS:", error);
     throw error;
   }
 }
