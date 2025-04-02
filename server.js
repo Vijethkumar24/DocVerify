@@ -12,27 +12,16 @@ import AWS from "aws-sdk";
 import session from "express-session";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
-import dotenv from "dotenv";
-import * as RedisStore from "connect-redis";
-import Redis from "ioredis";
+import { RedisStore } from "connect-redis";
 
+import dotenv from "dotenv";
+
+import { createClient } from "redis";
 dotenv.config();
-//Add your Sepolia
-const redisClient = new Redis(
+const redisClient = createClient(
   process.env.REDIS_URL || "redis://localhost:6379"
 );
 
-// Ensure Redis connects before using it
-
-app.use(
-  session({
-    store: new RedisStore({ client: redisClient }),
-    secret: process.env.SESSION_SECRET, // Use a strong secret key
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: process.env.NODE_ENV === "production" }, // Secure in production
-  })
-);
 let userAddress;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -42,6 +31,19 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(
+  session({
+    store: new RedisStore({
+      client: redisClient,
+    }),
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.SESSION_SECRET,
+    cookie: { secure: process.env.NODE_ENV === "production" },
+  })
+);
+// Initialize Redis Store
 
 // app.use(express.urlencoded({ extended: true }));
 
