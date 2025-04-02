@@ -62,7 +62,6 @@ app.use(express.static(path.join(__dirname, "assets/images")));
 app.use(express.static(path.join(__dirname, "assets/styles")));
 app.use(express.static(path.join(__dirname, "assets/scripts")));
 
-const port = 3000;
 app.use(express.json());
 
 const upload = multer({ dest: "uploads/" });
@@ -364,7 +363,7 @@ app.get("/verify", (req, res) => {
 app.get("/uploadDoc", (req, res) => {
   res.sendFile(path.join(__dirname, "source", "uploadDoc.html"));
 });
-
-app.listen(port, () => {
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
