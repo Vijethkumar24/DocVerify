@@ -57,15 +57,13 @@ const generateSecureKey = () => {
 };
 const secureKey = generateSecureKey();
 //session
-const memoryStore = new MemoryStore({
-  checkPeriod: 86400000, // Prune expired entries every 24 hours
-});
+const MemoryStoreInstance = MemoryStore(session);
 app.use(
   session({
-    store: memoryStore,
+    store: new MemoryStoreInstance({ checkPeriod: 86400000 }), // Check every 24 hours
+    secret: process.env.SESSION_SECRET || "fallback_secret",
     resave: false,
     saveUninitialized: false,
-    secret: process.env.SESSION_SECRET || "fallback_secret",
     cookie: { secure: process.env.NODE_ENV === "production" },
   })
 );
