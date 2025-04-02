@@ -8,11 +8,7 @@ import { dirname } from "path";
 import path from "path";
 import { readFile } from "fs/promises";
 import DocumentRegistryABI from "./build/contracts/DocumentRegistry.json" assert { type: "json" };
-import {
-  S3Client,
-  PutObjectCommand,
-  GetObjectCommand,
-} from "@aws-sdk/client-s3";
+import AWS from "aws-sdk";
 
 import session from "express-session";
 import bodyParser from "body-parser";
@@ -89,7 +85,7 @@ app.use(express.json());
 
 const upload = multer({ dest: "uploads/" });
 
-const filebaseClient = new S3Client({
+const filebaseClient = new AWS.S3({
   region: "us-east-1",
   endpoint: "https://s3.filebase.com",
   credentials: {
