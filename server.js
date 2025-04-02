@@ -23,11 +23,11 @@ import dotenv from "dotenv";
 
 import { createClient } from "redis";
 dotenv.config();
-const redisClient = createClient({
-  url: process.env.REDIS_URL,
-  legacyMode: true,
-});
-redisClient.connect().catch(console.error);
+// const redisClient = createClient({
+//   url: process.env.REDIS_URL,
+//   legacyMode: true,
+// });
+// redisClient.connect().catch(console.error);
 let userAddress;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -38,17 +38,17 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(
-  session({
-    store: new RedisStore({
-      client: redisClient,
-    }),
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.SESSION_SECRET || "fallback_secret",
-    cookie: { secure: process.env.NODE_ENV === "production" },
-  })
-);
+// app.use(
+//   session({
+//     store: new RedisStore({
+//       client: redisClient,
+//     }),
+//     resave: false,
+//     saveUninitialized: false,
+//     secret: process.env.SESSION_SECRET || "fallback_secret",
+//     cookie: { secure: process.env.NODE_ENV === "production" },
+//   })
+// );
 // Initialize Redis Store
 
 // app.use(express.urlencoded({ extended: true }));
