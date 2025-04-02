@@ -17,10 +17,8 @@ import {
 import session from "express-session";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
-
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-
-import { createClient } from "redis";
 dotenv.config();
 // const redisClient = createClient({
 //   url: process.env.REDIS_URL,
@@ -36,6 +34,7 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // app.use(
 //   session({
@@ -89,7 +88,7 @@ app.use(express.static(path.join(__dirname, "assets/scripts")));
 app.use(express.json());
 
 const upload = multer({ dest: "uploads/" });
-
+app.set("trust proxy", 1);
 const s3Client = new S3Client({
   region: "us-east-1",
   endpoint: "https://s3.filebase.com",
@@ -114,7 +113,11 @@ async function retrieveFileFromS3(bucket, key) {
     Key: key,
   });
   const { Body } = await s3Client.send(command);
-  return Body;
+  const chunks = [];
+  for await (const chunk of Body) {
+    chunks.push(chunk);
+  }
+  return Buffer.concat(chunks);
 }
 function deriveKeyFromPassword(password) {
   const passwordBuffer = Buffer.from(password, "utf-8");
@@ -290,16 +293,22 @@ app.post("/uploads", upload.single("document"), async (req, res) => {
 
 // Serve index.html when root URL is accessed
 app.post("/", (req, res) => {
-  userAddress = req.body.userAddress;
-  req.session.userAddress = userAddress;
-  console.log(userAddress);
-  if (userAddress) {
-    // Redirect to the home page after fetching the account address
-    res.redirect("/home");
-  } else {
-    // Handle the case where userAddress is not present
-    res.status(400).send("User address not found.");
+  const userAddress = req.body.userAddress;
+
+  if (!userAddress) {
+    return res.status(400).send("User address not found.");
   }
+
+  req.session.userAddress = userAddress;
+
+  req.session.save((err) => {
+    if (err) {
+      console.error("Session save error:", err);
+      return res.status(500).send("Error saving session.");
+    }
+    // console.log("Session saved successfully:", req.session);
+    res.redirect("/home");
+  });
 });
 
 //get All transctions
@@ -318,7 +327,9 @@ app.get("/etherscan-data", async (req, res) => {
 
 app.get("/getWalletAddress", async (req, res) => {
   // Get userAddress from session
+  // console.log("Get Wallet Adress Session Data:", req.session);
   const walletAddress = req.session.userAddress;
+  // console.log(walletAddress);
   // Send the wallet address data as JSON response
   res.json({ walletAddress });
 });
@@ -395,10 +406,6 @@ app.get("/uploadDoc", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  try {
-  } catch (error) {
-    console.log("Error connecting to reddis");
-  }
-  const railwayHost = process.env.RAILWAY_PUBLIC_DOMAIN || `localhost:${PORT}`;
-  console.log(`Server is running on https://${railwayHost}`);
+  // const railwayHost = process.env.RAILWAY_PUBLIC_DOMAIN || `localhost:${PORT}`;
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

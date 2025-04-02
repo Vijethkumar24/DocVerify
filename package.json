@@ -23,6 +23,7 @@
     "axios": "^1.8.4",
     "body-parser": "^1.20.2",
     "connect-redis": "^8.0.2",
+    "cookie-parser": "^1.4.7",
     "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
     "css-loader": "^6.10.0",

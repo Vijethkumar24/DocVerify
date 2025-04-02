@@ -13,22 +13,25 @@ async function connect() {
       const userAddress = accounts[0];
       console.log("Connected with address:", userAddress);
       if (userAddress) {
-        // Send user address as a POST request to server
         fetch("/", {
           method: "POST",
+          credentials: "include", // Ensures cookies are sent
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ userAddress: userAddress }),
         })
           .then((response) => {
-            // Handle response if needed
-            // Redirect to home page after successful login
-            window.location.href = "/home";
+            if (response.redirected) {
+              window.location.href = response.url; // Handle redirects properly
+            } else {
+              return response.json(); // Only parse JSON if no redirect
+            }
           })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
+          .then((data) => {
+            if (data) console.log("Server Response:", data);
+          })
+          .catch((error) => console.error("Error:", error));
       }
     } catch (error) {
       console.error(error);

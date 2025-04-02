@@ -425,7 +425,10 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     function loadWalletAddress() {
-      fetch("/getWalletAddress")
+      fetch("/getWalletAddress",{
+  method: "GET",
+  credentials: "include", // This ensures cookies are sent
+})
         .then(response => response.json())
         .then(data => {
           const walletAddress = data.walletAddress;

@@ -113,6 +113,7 @@ document
       const response = await fetch("/getdocHash", {
         method: "POST",
         body: formData,
+        credentials: "include", // This ensures cookies are sent
       });
 
       if (!response.ok) {
@@ -129,6 +130,7 @@ document
           const response = await fetch("/uploads", {
             method: "POST",
             body: formData,
+            credentials: "include", // This ensures cookies are sent
           });
           if (!response.ok) {
             throw new Error("Failed to get document hash");
@@ -195,6 +197,7 @@ async function isFileAlreadyExists(docHash, abi) {
       // Your contract address and ABI
       const contractAddress = await fetch("/getContractAddress", {
         method: "GET",
+        credentials: "include", // This ensures cookies are sent
       })
         .then((response) => response.json())
         .then((data) => data.contractAddress)
@@ -252,6 +255,7 @@ async function initiateTransaction(
       // Your contract address and ABI
       const contractAddress = await fetch("/getContractAddress", {
         method: "GET",
+        credentials: "include", // This ensures cookies are sent
       })
         .then((response) => response.json())
         .then((data) => data.contractAddress)
