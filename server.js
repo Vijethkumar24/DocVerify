@@ -98,6 +98,7 @@ const s3Client = new S3Client({
   },
   forcePathStyle: true,
 });
+app.set("trust proxy", 1);
 async function uploadFileToS3(bucket, key, body) {
   const command = new PutObjectCommand({
     Bucket: bucket,
