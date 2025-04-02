@@ -1,74 +1,255 @@
 
 /* Height for devices larger than 576px */
 @media (min-width: 992px) {
-    #introCarousel {
-      margin-top: -58.59px;
-    }
+  #introCarousel {
+    margin-top: -58.59px;
   }
-  
-  .navbar .nav-link {
-    color: #fff !important;
+  .card:hover{
+    transform: scale(1.1);
   }
-  
-  body{
-      background-color: hsl(218, 41%, 15%);
-      overflow: hidden;
-      
-  }
-  
-  #radius-shape-1 {
-      height: 220px;
-      width: 220px;
-      top: -60px;
-      left: -130px;
-      background: radial-gradient(#44006b, #ad1fff);
-      overflow: hidden;
-    }
-  
-    #radius-shape-2 {
-      border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
-      bottom: -60px;
-      right: -110px;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(#44006b, #ad1fff);
-      overflow: hidden;
-    }
-    
-  #box,h4 {
-      color: aliceblue;
-  }
-  
-  li a:hover {
-      font-size: large;
-      color: #50aedd;
-  }
-  
-    @media screen and (max-height: 300px) {
-        ul {
-            margin-top: 40px;
-        }
-    }
-  
-  .btn-primary {
-      color: #fff;
-      background-color:rgb(42, 78, 96);
-      border-color:rgb(41, 75, 92);
-  }
-  /*verfyDoc page css*/
-  .table {
-    width: 85%;
-    margin-bottom: 1rem;
-    color: white;
-    margin-top: 4rem;
-    margin-left: 4rem;
-  }
-  
-  table{
-    border:1px solid whitesmoke;
-    background-color: rgba(50, 148, 245, 0.1);
-  }
+}
 
-  .ms-3 p{
-    padding-left: 20px;
+.navbar .nav-link {
+  color: #fff !important;
+}
+
+body{
+    background-color: hsl(218, 41%, 15%);
+    background-image: radial-gradient(650px circle at 0% 0%,
+        hsl(218, 41%, 35%) 15%,
+        hsl(218, 41%, 30%) 35%,
+        hsl(218, 41%, 20%) 75%,
+        hsl(218, 41%, 19%) 80%,
+        transparent 100%),
+      radial-gradient(1250px circle at 100% 100%,
+        hsl(218, 41%, 45%) 15%,
+        hsl(218, 41%, 30%) 35%,
+        hsl(218, 41%, 20%) 75%,
+        hsl(218, 41%, 19%) 80%,
+        transparent 100%);
+        overflow-y: auto;
+        overflow-x: hidden;
+        background-repeat: no-repeat;
+        
+}
+
+
+
+  
+#box,h4 {
+    color: aliceblue;
+}
+.container-fluid a:hover {
+  font-size: large;
+}
+
+.carousel-item a:hover {
+    font-size: large;
+      color: #50aedd;
+}
+
+
+.carousel-item a:after {    
+    background: none repeat scroll 0 0 transparent;
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    background: #fff;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 0;
   }
+  a:hover:after { 
+    width: 100%; 
+    left: 0; 
+  }
+  @media screen and (max-height: 300px) {
+      ul {
+          margin-top: 40px;
+      }
+      
+     
+  }
+  
+.btn-primary {
+    color: #fff;
+    background-color:rgb(42, 78, 96);
+    border-color:rgb(41, 75, 92);
+}
+
+.card-body p {
+  line-height: 1.6rem;
+  font-weight: 500;
+}
+
+.icon-text-container {
+  display: flex;
+  align-items: center;
+}
+
+.icon-text-container i {
+  margin-right: 10px; /* Adjust the margin as needed */
+  
+}
+
+.card-button {
+  margin-top: 1.2rem;
+}
+
+.icon-text-container p{
+  line-height: 2rem;
+}
+
+.text-muted{
+  color: aliceblue;
+}
+
+.contactus {
+  color: #fff;
+  width: 60vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+#walletAddress
+{
+ font: bolder;
+ color: aliceblue;
+ font-size: large;
+}
+#walletAddressDesktop
+{
+ font: bolder;
+ color: aliceblue;
+ font-size: large;
+}
+
+/* body{
+  background-color: hsl(218, 41%, 15%);
+    overflow: hidden;
+} */
+@keyframes floatUpDown {
+  0% {
+      transform: translateY(0);
+  }
+  50% {
+      transform: translateY(-10px);
+  }
+  100% {
+      transform: translateY(0);
+  }
+}
+
+.float-animation {
+  animation: floatUpDown 3s infinite ease-in-out;
+}
+
+
+@keyframes floatUpDown {
+  0% {
+      transform: translateY(0);
+  }
+  50% {
+      transform: translateY(-10px);
+  }
+  100% {
+      transform: translateY(0);
+  }
+}
+
+#radius-shape-1 {
+  animation: floatUpDown 2s infinite ease-in-out;
+}
+
+#radius-shape-2 {
+  animation: floatUpDown 3s infinite ease-in-out;
+}
+
+
+table {
+  border-collapse: collapse;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2%;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+td{
+  color: #f2f2f2;
+}
+th {
+  background-color: #f2f2f2;
+} 
+.popup {
+  display: none;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 999;
+}
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.text-2xl {
+  color: #ddd;
+  position: relative;
+  padding-right: 2%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid black;
+  padding: 20px;
+  z-index: 9999; /* Make sure it's higher than other elements */
+}
+
+
+.styled-table {
+  border-collapse: collapse;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Change to your desired track color */
+}
+
+/* Style the scrollbar thumb */
+.table-container::-webkit-scrollbar-thumb {
+  background: #888; /* Change to your desired thumb color */
+}
+
+/* Style the scrollbar on hover */
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Change to your desired thumb color on hover */
+}
+
+/* Change the width and height of the scrollbar */
+.table-container::-webkit-scrollbar {
+  width: 10px; /* Change to your desired width */
+  height: 10px; /* Change to your desired height */
+}

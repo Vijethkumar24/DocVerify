@@ -1,5 +1,4 @@
 
-
 /* Height for devices larger than 576px */
 @media (min-width: 992px) {
   #introCarousel {
@@ -13,7 +12,15 @@
 .navbar .nav-link {
   color: #fff !important;
 }
-
+a:hover{
+  text-decoration: none !important;
+}
+.navbar li {
+  font-size: x-large !important;
+}
+.navbar .nav-link a:hover{
+  transform: none !important;
+}
 body{
     background-color: hsl(218, 41%, 15%);
     background-image: radial-gradient(650px circle at 0% 0%,
@@ -37,6 +44,7 @@ body{
     left: -130px;
     background: radial-gradient(#44006b, #ad1fff);
     overflow: hidden;
+    z-index: 50;
   }
 
   #radius-shape-2 {
@@ -192,3 +200,23 @@ body{
   animation: floatUpDown 3s infinite ease-in-out;
 }
 
+.navbar.navbar-expand-lg.navbar-dark.d-lg-none a:hover {
+  transform: none !important;
+}
+
+.border {
+  border: 1px solid gray !important;
+  border-radius: 5px;
+}
+
+.step-card {
+  position: relative; /* Required for z-index */
+  transition: all 0.3s ease-in-out; /* Smooth animation */
+}
+
+.step-card:hover {
+  transform: scale(1.05); /* Slightly enlarges the card */
+  border: 5px solid #50aedd; /* Highlight effect */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  z-index: 50; /* Bring to front */
+}

@@ -8,89 +8,58 @@
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="/assets/styles/homepage.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
 </head>
 
 <body onload="loadWalletAddress()">
+  
   <!--Main Navigation-->
   <header>
 
     <!-- Navbar -->
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark d-lg-none" style="z-index: 2000;">
-      <div class="container-fluid">
-        <!-- Navbar brand -->
-        <a class="navbar-brand nav-link" target="_blank" href="#">
-          <strong>VerifyDoc</strong>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMobile"
-          aria-controls="navbarMobile" aria-expanded="false" aria-label="Toggle navigation">
-          <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarMobile">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" aria-current="page" onclick="scrollDown()">Home</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" aria-current="page" href="#intro">Verifyed Documents</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" rel="nofollow" target="_blank"
-                onclick="scrollByPercentage(700, event)">Contact Us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" target="_blank" onclick="scrollByPercentage(600, event)">About Us</a>
-            </li>
+    <nav class="bg-gray-900 text-white p-4 shadow-lg fixed w-full top-0 z-50 text-xl">
+
+      <div class="container mx-auto flex items-center justify-between">
+          <!-- Left: Logo / Page Name -->
+           
+            <a href="#" class="text-xl font-bold text-white">VerifyDoc</a>
+          
+
+          <!-- Center: Navbar Links (Hidden in Mobile) -->
+          <ul class="hidden md:flex space-x-6">
+              <li><a href="/" class="hover:text-blue-400 no-underline">Home</a></li>
+              <li><a href="/verify" class="hover:text-blue-400 no-underline">Verified Documents</a></li>
+              <li><a href="#" onclick="scrollByPercentage(700, event)" class="hover:text-blue-400 no-underline">Contact</a></li>
+              <li><a href="#" onclick="scrollByPercentage(600, event)" class="hover:text-blue-400 no-underline">About</a></li>
           </ul>
-        </div>
+
+          <!-- Right: Wallet Address -->
+          <span id="walletAddress" class="hidden md:block bg-gray-700 px-3 py-1 rounded-full text-sm">0x123...456</span>
+
+          <!-- Mobile Menu Button -->
+          <button id="menuBtn" class="md:hidden text-white focus:outline-none">
+              <span class="material-symbols-outlined text-2xl">menu</span>
+          </button>
       </div>
-       <!-- PROFILE FOR MOBILE VIEW-->
-       <div class="collapse navbar-collapse" id="navbarMobile">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <span id="walletAddress" class="nav-link"></span>
-          </li>
-        </ul>
+
+      <!-- Mobile Dropdown -->
+      <div id="mobileMenu" class="hidden md:hidden bg-gray-800 p-4 mt-2">
+          <a href="/" class="block py-2 no-underline">Home</a>
+          <a href="/verify" class="block py-2 no-underline">Verified Documents</a>
+          <a href="#" onclick="scrollByPercentage(700, event)" class="block py-2 no-underline">Contact</a>
+          <a href="#" onclick="scrollByPercentage(600, event)" class="block py-2 no-underline">About</a>
       </div>
-      
-      <!-- Profile Display and Update Section -->
-      
-      
-      
-    </nav>
-    <!-- Desktop navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark d-none d-lg-block" style="z-index: 2000;">
-      <div class="container-fluid">
-        <!-- Navbar brand -->
-        <a class="navbar-brand nav-link" target="_blank" href="#">
-          <strong>VerifyDoc</strong>
-        </a>
-        <div class="collapse navbar-collapse" id="navbarDesktop">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item active">
-              <a class="nav-link" aria-current="page" href="#intro">Home</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" aria-current="page" href="#intro">Verified Documents</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" rel="nofollow" target="_blank" onclick="scrollByPercentage(350, event)">Contact Us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" target="_blank" onclick="scrollByPercentage(250, event)">About Us</a>
-            </li>
-          </ul>
-          <!-- Wallet Address for Desktop -->
-        </div>
-        <div class="collapse navbar-collapse" id="navbarDesktop">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-            <span id="walletAddressDesktop" class="nav-link"></span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+  </nav>
+
+  <script>
+      // Toggle mobile menu
+      document.getElementById("menuBtn").addEventListener("click", function () {
+          document.getElementById("mobileMenu").classList.toggle("hidden");
+      });
+  </script>
     <!-- Navbar -->
     <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
 
@@ -107,15 +76,15 @@
           <div class="mask" style="background-color: hsla(200, 40%, 20%, 0.3);">
             <div class="d-flex justify-content-center align-items-center h-100">
               <div class="text-white text-center" data-mdb-theme="dark" style="margin-top:30vh; margin-bottom:20vh;">
-                <h1 class="mb-3">Secure Your Document With Our Help!</h1>
-                <h5 class="mb-4">In Best & Secure Manner</h5>
+                <h1 class="mb-3 text-3xl">Secure Your Document With Our Help!</h1>
+                <h5 class="mb-4 text-xl">In Best & Secure Manner</h5>
                 <!-- Add an input element for file upload -->
                 <input type="file" id="fileInput" style="display: none;" />
-                <a class="btn btn-outline-light btn-lg m-2" data-mdb-ripple-init href="uploadDoc.html" role="button" rel="nofollow">Upload Doc</a>
+                <a class="btn btn-outline-light btn-lg m-2" data-mdb-ripple-init href="/uploadDoc" role="button" rel="nofollow">Upload Doc</a>
 
                 <input type="file" id="fileInput" style="display: none;" />
-                <a class="btn btn-outline-light btn-lg m-2" data-mdb-ripple-init href="javascript:void(0);"
-                   role="button" rel="nofollow" target="_blank">Verify Doc</a>
+                <a class="btn btn-outline-light btn-lg m-2" data-mdb-ripple-init href="/userVerfiedDoc"
+                   role="button" rel="nofollow" >Verify Doc</a>
               </div>
             </div>
           </div>
@@ -199,17 +168,17 @@
             </div>
           </div>
 
-          <div id="box" class="col-md-6 gx-5 mb-4">
-            <h4><strong>Why We Use BlockChain?</strong></h4>
-            <p class="text-muted">
+          <div id="box" class="col-md-6 gx-5 mb-4 text-muted ">
+            <h4 class="text-2xl"><strong>Why We Use BlockChain?</strong></h4>
+            <p class="text-muted text-xl mt-2">
               Blockchain technology is increasingly employed in the fight against counterfeit documents due to its
               unique attributes that bolster security and transparency. At the core of its effectiveness is
               immutability, as once data is added to a block, it becomes nearly impossible to alter or tamper with. The
               decentralized nature of blockchain, spread across a network of nodes, ensures that there is no single
               vulnerable point for malicious actors seeking to manipulate or forge documents.
             </p>
-            <h4><strong>Smart Contracts:</strong></h4>
-            <p class="text-muted">
+            <h4 class="text-2xl mt-3 mb-2"><strong>Smart Contracts:</strong></h4>
+            <p class="text-muted text-xl">
               Smart contracts, integral to many blockchain systems, automate verification processes and reduce the risk
               of human error. Furthermore, blockchain offers traceability, enabling the tracking of a document's entire
               history from creation to the present moment. Implementing digital signatures on the blockchain enhances
@@ -225,114 +194,52 @@
       </section>
       <!--Section: Content-->
 
-      <hr class="my-5" />
+      <hr class="my-2" />
 
       <!--Section: Content-->
       <div class="section-separator"></div>
-      <section class="text-center">
-        <h4 class="mb-5"><strong>How To Upload Documents?</strong></h4>
-
-        <div class="row">
-          <div class="col-lg-4 col-md-12 mb-4">
-            <div class="card">
-              <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
-                <img src="/assets/images/upload_doc_pic-removebg-preview.png" class="img-fluid" />
-                <a href="#!">
-                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                </a>
-              </div>
-
-              <div class="card-body">
-                <h5 class="card-title">Step 1</h5>
-                <div class="icon-text-container">
-                  <i class="fa-solid fa-feather-pointed"></i>
-                  <p class="card-text">Click On Upload Document Button</p>
-                </div>
-                <div class="icon-text-container">
-                  <i class="fa-solid fa-feather-pointed"></i>
-                  <p class="card-text">Select The Type Of Document</p>
-                </div>
-                <div class="icon-text-container">
-                  <i class="fa-solid fa-feather-pointed"></i>
-                  <p class="card-text">Click on Upload </p>
-                </div>
-                <div class="card-button">
-                  <a href="#!" class="btn btn-primary" data-mdb-ripple-init>Button</a>
-                </div>
-              </div>
-            </div>
+      <section class="text-center py-10">
+        <h2 class="text-3xl font-bold text-white mb-8">How To Upload Documents?</h2>
+        
+        <div class="grid md:grid-cols-3 gap-6 px-4 max-w-6xl mx-auto">
+          <!-- Step 1 -->
+          <div class="step-card bg-white shadow-lg rounded-xl overflow-hidden p-6">
+            <img src="/assets/images/upload_doc_pic-removebg-preview.png" class="w-full h-40 object-contain mb-4" alt="Upload Document" />
+            <h3 class="text-xl font-semibold text-gray-700 mb-3">Step 1</h3>
+            <ul class="text-gray-600 space-y-2">
+              <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Click On Upload Document Button</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Select The Type Of Document</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Click on Upload</li>
+            </ul>
           </div>
-
-          <!--div #2-->
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card">
-              <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
-                <img src="/assets/images/verify_doc-removebg-preview.png" class="img-fluid" />
-                <a href="#!">
-                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                </a>
-              </div>
-
-              <div class="card-body">
-                <h5 class="card-title">Step 2</h5>
-                <div class="icon-text-container">
-                  <i class="fa-solid fa-feather-pointed"></i>
-                  <p class="card-text">Click On Verify Document Button</p>
-                </div>
-                <div class="icon-text-container">
-                  <i class="fa-solid fa-feather-pointed"></i>
-                  <p class="card-text">Select The Type Of Document</p>
-                </div>
-                <div class="icon-text-container">
-                  <i class="fa-solid fa-feather-pointed"></i>
-                  <p class="card-text">Click on Upload </p>
-                </div>
-                <div class="card-button">
-                  <a href="#!" class="btn btn-primary" data-mdb-ripple-init>Button</a>
-                </div>
-              </div>
-            </div>
-
+      
+          <!-- Step 2 -->
+          <div class="step-card bg-white shadow-lg rounded-xl overflow-hidden p-6">
+            <img src="/assets/images/verify_doc-removebg-preview.png" class="w-full h-40 object-contain mb-4" alt="Verify Document" />
+            <h3 class="text-xl font-semibold text-gray-700 mb-3">Step 2</h3>
+            <ul class="text-gray-600 space-y-2">
+              <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Click On Verify Document Button</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Click on Get File</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Enter Password</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Click on Fetch File</li>
+            </ul>
           </div>
-
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card">
-              <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
-                <img src="/assets/images/all_verified_doc-removebg-preview.png" class="img-fluid" />
-                <a href="#!">
-                  <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                </a>
-              </div>
-
-              <div class="card-body">
-                <h5 class="card-title">Step 3</h5>
-                <div class="icon-text-container">
-                  <i class="fa-solid fa-feather-pointed"></i>
-                  <p class="card-text">Check all Verifyed Document </p>
-                </div>
-                <div class="icon-text-container">
-                  <i class="fa-solid fa-feather-pointed"></i>
-                  <p class="card-text">Click On View To Get Details</p>
-                </div>
-                <div class="icon-text-container">
-                  <i class="fa-solid fa-feather-pointed"></i>
-                  <p class="card-text">Done</p>
-                </div>
-                <div class="card-button">
-                  <a href="#!" class="btn btn-primary" data-mdb-ripple-init>Button</a>
-                </div>
-              </div>
-            </div>
+      
+          <!-- Step 3 -->
+          <div class="step-card bg-white shadow-lg rounded-xl overflow-hidden p-6">
+            <img src="/assets/images/all_verified_doc-removebg-preview.png" class="w-full h-40 object-contain mb-4" alt="View Verified Documents" />
+            <h3 class="text-xl font-semibold text-gray-700 mb-3">Step 3</h3>
+            <ul class="text-gray-600 space-y-2">
+              <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Check all Verified Documents</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Click On View To Get Details</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> Done</li>
+            </ul>
           </div>
-
-
-
-
         </div>
       </section>
       <!--Section: Content-->
 
-      <hr class="my-5" />
+      <hr class="my-2" />
 
       <!--Section: Content-->
 
@@ -354,8 +261,8 @@
           </div>
 
           <div id="box" class="col-md-6 gx-5 mb-4">
-            <h4><strong>About US</strong></h4>
-            <p class="text-muted">
+            <h4 class="text-2xl mb-2"><strong>About US</strong></h4>
+            <p class="text-muted text-xl ">
               In our commitment to ensuring the authenticity and integrity of documents, we have strategically
               implemented blockchain technology as a formidable tool against counterfeiting. The fundamental strength of
               blockchain lies in its immutability, making any attempt to tamper with data exceptionally challenging once
@@ -384,151 +291,138 @@
 
 
   <!--Section: Contact v.2-->
-  <section class="contactus mb-4">
-
-    <!--Section heading-->
-    <h2 class="h1-responsive font-weight-bold text-center my-4">Contact us</h2>
-    <!--Section description-->
-    <p class="text-center w-responsive mx-auto mb-5">Do you have any questions? Please do not hesitate to contact us
-      directly. Our team will come back to you within
-      a matter of hours to help you.</p>
-
-    <div class="row">
-
-      <!--Grid column-->
-      <div class="col-md-9 mb-md-0 mb-5">
-        <form id="contact-form" name="contact-form" method="POST">
-
-          <!--Grid row-->
-          <div class="row">
-
-            <!--Grid column-->
-            <div class="col-md-6">
-              <div class="md-form mb-0">
-                <input type="text" id="name" name="name" class="form-control">
-                <label for="name" class="">Your name</label>
+  <section class="py-6 mb-6">
+    <div class="max-w-5xl mx-auto px-6">
+      <!-- Section Heading -->
+      <h2 class="text-3xl font-bold text-center text-gray-800 mb-6 text-white">Contact Us</h2>
+      <p class="text-xl text-center text-gray-600 mb-8 text-white">
+        Have any questions? Feel free to reach out. Our team will respond as soon as possible.
+      </p>
+  
+      <div class="flex justify-center">
+        <!-- Contact Form -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <form id="contact-form" method="POST" action="/send-message">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="name" class="text-gray-700 font-medium">Your Name</label>
+                <input type="text" id="name" name="name" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required>
+              </div>
+              <div>
+                <label for="email" class="text-gray-700 font-medium">Your Email</label>
+                <input type="email" id="email" name="email"
+                class="w-full mt-2 p-3 border border-red !important rounded-lg focus:ring focus:ring-blue-300"
+                required>
               </div>
             </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-md-6">
-              <div class="md-form mb-0">
-                <input type="text" id="email" name="email" class="form-control">
-                <label for="email" class="">Your email</label>
-              </div>
+  
+            <div class="mt-4">
+              <label for="subject" class="text-gray-700 font-medium">Subject</label>
+              <input type="text" id="subject" name="subject" class="w-full mt-2 p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" required>
             </div>
-            <!--Grid column-->
-
-          </div>
-          <!--Grid row-->
-
-          <!--Grid row-->
-          <div class="row">
-            <div class="col-md-12">
-              <div class="md-form mb-0">
-                <input type="text" id="subject" name="subject" class="form-control">
-                <label for="subject" class="">Subject</label>
-              </div>
+  
+            <div class="mt-4">
+              <label for="message" class="text-gray-700 font-medium">Your Message</label>
+              <textarea id="message" name="message" rows="4" class="w-full mt-2 p-3 border border-gray-500 rounded-lg focus:ring focus:ring-blue-300" required></textarea>
             </div>
-          </div>
-          <!--Grid row-->
-
-          <!--Grid row-->
-          <div class="row">
-
-            <!--Grid column-->
-            <div class="col-md-12">
-
-              <div class="md-form">
-                <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea"></textarea>
-                <label for="message">Your message</label>
-              </div>
-
-            </div>
-          </div>
-          <!--Grid row-->
-
-        </form>
-
-        <div class="text-center text-md-left">
-          <a id="contactButton" class="btn btn-primary m-1" role="button" data-mdb-ripple-init rel="nofollow" target="_blank">Contact Us</a>
-
+  
+            <button type="submit" class="w-full bg-blue-600 text-white py-3 mt-6 rounded-lg hover:bg-blue-700 transition">Send Message</button>
+          </form>
         </div>
-        <div class="status"></div>
+  
+        <!-- Contact Details -->
       </div>
-      <!--Grid column-->
-
-      <!--Grid column-->
-      <div class="col-md-3 text-center">
-        <ul class="list-unstyled mb-0">
-          <li><i class="fas fa-map-marker-alt fa-2x"></i>
-            <p></p>
-          </li>
-
-          <li><i class="fas fa-phone mt-4 fa-2x"></i>
-            <p></p>
-          </li>
-
-          <li><i class="fas fa-envelope mt-4 fa-2x"></i>
-            <p></p>
-          </li>
-        </ul>
-      </div>
-      <!--Grid column-->
-
     </div>
-    <div class="section-separator"></div>
   </section>
+  
 
 
   <!--Section: Contact v.2-->
 
   <!--Footer-->
-  <footer class="bg-light text-lg-start">
-    <div class="py-4 text-center">
-      <a role="button" class="btn btn-primary btn-lg m-2" data-mdb-ripple-init
-        href="#" rel="nofollow" target="_blank">
-        Why us?
-      </a>
-      <a role="button" class="btn btn-primary btn-lg m-2" data-mdb-ripple-init href="#" target="_blank">
-        QnA
-      </a>
-    </div>
+  
 
-    <hr class="m-0" />
-
-    <div class="text-center py-4 align-items-center">
-      <p>Follow Us on social media</p>
-      <a href="#" class="btn btn-primary m-1" role="button"
-        data-mdb-ripple-init rel="nofollow" target="_blank">
-        <i class="fab fa-youtube"></i>
-      </a>
-      <a href="#" class="btn btn-primary m-1" role="button" rel="nofollow"
-        data-mdb-ripple-init target="_blank">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="#" class="btn btn-primary m-1" role="button" rel="nofollow"
-        data-mdb-ripple-init target="_blank">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a href="#" class="btn btn-primary m-1" role="button" rel="nofollow"
-        data-mdb-ripple-init target="_blank">
-        <i class="fab fa-github"></i>
-      </a>
+<footer class="bg-white dark:bg-gray-900">
+  <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+      <div class="md:flex md:justify-between">
+        <div class="mb-6 md:mb-0">
+            <a href="https://flowbite.com/" class="flex">
+                <img src="./assets/images/logo.png" class="h-40 w-40 me-3" alt="FlowBite Logo" />
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">VerifyDoc</span>
+            </a>
+        </div>
+        <div class="py-8 grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+            <div>
+                <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow us</h2>
+                <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                    <li class="mb-4">
+                        <a href="#" class="hover:underline ">Github</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:underline">Discord</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
+                <ul class="text-gray-500 dark:text-gray-400 font-medium">
+                    <li class="mb-4">
+                        <a href="#" class="hover:underline">Privacy Policy</a>
+                    </li>
+                    <li>
+                        <a href="#" class="hover:underline">Terms &amp; Conditions</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-
-    <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-      © 2020 Copyright:
-      <a class="text-dark" href="#">#########</a>
+    <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+    <div class="sm:flex sm:items-center sm:justify-between">
+        <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" class="hover:underline">VerifyDoc™</a>. All Rights Reserved.
+        </span>
+        <div class="flex mt-4 sm:justify-center sm:mt-0">
+            <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">
+                      <path fill-rule="evenodd" d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z" clip-rule="evenodd"/>
+                  </svg>
+                <span class="sr-only">Facebook page</span>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 21 16">
+                      <path d="M16.942 1.556a16.3 16.3 0 0 0-4.126-1.3 12.04 12.04 0 0 0-.529 1.1 15.175 15.175 0 0 0-4.573 0 11.585 11.585 0 0 0-.535-1.1 16.274 16.274 0 0 0-4.129 1.3A17.392 17.392 0 0 0 .182 13.218a15.785 15.785 0 0 0 4.963 2.521c.41-.564.773-1.16 1.084-1.785a10.63 10.63 0 0 1-1.706-.83c.143-.106.283-.217.418-.33a11.664 11.664 0 0 0 10.118 0c.137.113.277.224.418.33-.544.328-1.116.606-1.71.832a12.52 12.52 0 0 0 1.084 1.785 16.46 16.46 0 0 0 5.064-2.595 17.286 17.286 0 0 0-2.973-11.59ZM6.678 10.813a1.941 1.941 0 0 1-1.8-2.045 1.93 1.93 0 0 1 1.8-2.047 1.919 1.919 0 0 1 1.8 2.047 1.93 1.93 0 0 1-1.8 2.045Zm6.644 0a1.94 1.94 0 0 1-1.8-2.045 1.93 1.93 0 0 1 1.8-2.047 1.918 1.918 0 0 1 1.8 2.047 1.93 1.93 0 0 1-1.8 2.045Z"/>
+                  </svg>
+                <span class="sr-only">Discord community</span>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 17">
+                  <path fill-rule="evenodd" d="M20 1.892a8.178 8.178 0 0 1-2.355.635 4.074 4.074 0 0 0 1.8-2.235 8.344 8.344 0 0 1-2.605.98A4.13 4.13 0 0 0 13.85 0a4.068 4.068 0 0 0-4.1 4.038 4 4 0 0 0 .105.919A11.705 11.705 0 0 1 1.4.734a4.006 4.006 0 0 0 1.268 5.392 4.165 4.165 0 0 1-1.859-.5v.05A4.057 4.057 0 0 0 4.1 9.635a4.19 4.19 0 0 1-1.856.07 4.108 4.108 0 0 0 3.831 2.807A8.36 8.36 0 0 1 0 14.184 11.732 11.732 0 0 0 6.291 16 11.502 11.502 0 0 0 17.964 4.5c0-.177 0-.35-.012-.523A8.143 8.143 0 0 0 20 1.892Z" clip-rule="evenodd"/>
+              </svg>
+                <span class="sr-only">Twitter page</span>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd"/>
+                </svg>
+                <span class="sr-only">GitHub account</span>
+            </a>
+            <a href="#" class="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 0a10 10 0 1 0 10 10A10.009 10.009 0 0 0 10 0Zm6.613 4.614a8.523 8.523 0 0 1 1.93 5.32 20.094 20.094 0 0 0-5.949-.274c-.059-.149-.122-.292-.184-.441a23.879 23.879 0 0 0-.566-1.239 11.41 11.41 0 0 0 4.769-3.366ZM8 1.707a8.821 8.821 0 0 1 2-.238 8.5 8.5 0 0 1 5.664 2.152 9.608 9.608 0 0 1-4.476 3.087A45.758 45.758 0 0 0 8 1.707ZM1.642 8.262a8.57 8.57 0 0 1 4.73-5.981A53.998 53.998 0 0 1 9.54 7.222a32.078 32.078 0 0 1-7.9 1.04h.002Zm2.01 7.46a8.51 8.51 0 0 1-2.2-5.707v-.262a31.64 31.64 0 0 0 8.777-1.219c.243.477.477.964.692 1.449-.114.032-.227.067-.336.1a13.569 13.569 0 0 0-6.942 5.636l.009.003ZM10 18.556a8.508 8.508 0 0 1-5.243-1.8 11.717 11.717 0 0 1 6.7-5.332.509.509 0 0 1 .055-.02 35.65 35.65 0 0 1 1.819 6.476 8.476 8.476 0 0 1-3.331.676Zm4.772-1.462A37.232 37.232 0 0 0 13.113 11a12.513 12.513 0 0 1 5.321.364 8.56 8.56 0 0 1-3.66 5.73h-.002Z" clip-rule="evenodd"/>
+              </svg>
+                <span class="sr-only">Dribbble account</span>
+            </a>
+        </div>
     </div>
-    <!-- Copyright -->
-  </footer>
+  </div>
+</footer>
+
   <!--Footer-->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src = "https://smtpjs.com/v3/smtp.js"></script>
+  <script src = "./assets/scripts/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     function loadWalletAddress() {
       fetch("/getWalletAddress")
@@ -540,6 +434,24 @@
         })
         .catch(error => console.error("Error:", error));
     }
+    function logout() {
+      if (typeof window.ethereum !== 'undefined') {
+        window.ethereum.request({ method: 'wallet_requestPermissions' }).then(() => {
+          window.ethereum.request({ method: 'wallet_clearEthSignAccount' }).then(() => {
+            // Reload the page after logout
+            window.location.reload();
+          });
+        });
+      } else {
+        // MetaMask extension or similar is not available
+        Swal.fire({
+          icon: 'error',
+          title: 'MetaMask Not Detected',
+          text: 'Please make sure you have MetaMask installed and unlocked.'
+        });
+      }
+    }
+    
   </script>
 
 </body>

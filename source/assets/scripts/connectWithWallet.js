@@ -34,6 +34,11 @@ async function connect() {
       console.error(error);
     }
   } else {
+    Swal.fire({
+      icon: "error",
+      title: "Meta Mask Extension Not Found",
+      text: "Please Add Meta Mask Extension!!",
+    });
     console.log("MetaMask not detected.");
   }
 }

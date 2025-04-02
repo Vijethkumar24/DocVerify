@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>verifyDoc</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="./assets/styles/verifyDoc.css"> 
+</head>
+<body>
+  <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+  <header>
+
+    <!-- Navbar -->
+
+  
+  <div class="mt-5 mb-2 flex justify-end">
+    <p class="text-2xl font-bold mb-1">ALL VERIFIED DOCUMENTS</p>
+    <div class="flex justify-end left-0 mt-2 ml-5 z-50">
+      <label for="categoryFilter" class="mr-2" style="color:whitesmoke">Filter by Category:</label>
+      <select id="categoryFilter" onchange="filterByCategory()"class="rounded-md border-gray-200 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 shadow-sm mr-5">
+        <option value="all">All</option>
+        <option value="Educational">Educational</option>
+        <option value="Financial">Financial</option>
+        <option value="Government">Government</option>
+      </select>
+    </div>
+    <input type="text" id="searchInput" class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" placeholder="Search..." style="width:500px;margin-bottom: 0%; padding-left: 1%;">
+    <button onclick="searchLogs()" class="ml-1 mr-12 px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded">Search</button>
+  </div>
+  <!-- <div class="overflow-x-auto">
+    <div class="table-container" style="height: 600px; overflow-y: auto;">
+      <table class="table-auto border-collapse border border-gray-800 styled-table">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="px-4 py-2">Document Hash</th>
+            <th class="px-4 py-2">Filename</th>
+            <th class="px-4 py-2">FileType</th>
+            <th class="px-4 py-2">File Category</th>
+            <th class="px-4 py-2">Get File</th>
+            <th class="px-4 py-2">View Details</th>
+          </tr>
+        </thead>
+        <tbody id="decodedLogsBody"></tbody>
+      </table>
+    </div>
+  </div> -->
+  <div id="logsContainer" class="overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 ">
+    </div>
+  <!-- <div id="radius-shape-2" class="position-absolute rounded-circle shadow-5-strong"></div> -->
+
+  <div id="popup" class="popup hidden">
+    <div class="close absolute top-0 right-0 px-4 py-2 cursor-pointer text-white" onclick="closePopup()">X</div>
+    <div id="popupContent" class="p-4"></div>
+  </div>
+
+ 
+
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.5.3/dist/web3.min.js"></script>
+  <script src="./assets/scripts/userVerifiedDoc.js"></script>
+<div id="radius-shape-2" class="position-absolute rounded-circle shadow-5-strong"></div>
+
+  <div class="bubble-1"></div>
+  <div class="bubble-2"></div>
+  <div class="bubble-3"></div>
+  <div class="bubble-4"></div>
+  <div class="bubble-5"></div>
+  <div class="bubble-6"></div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

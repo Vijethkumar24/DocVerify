@@ -6,6 +6,8 @@
     <title>Upload Documents</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+
     <link rel="stylesheet" href="/assets/styles/uploadDoc.css">
 </head>
 <body>
@@ -21,10 +23,9 @@
                 </a>
             </div>
         </nav>
-        <a href="home.html" class="previous-page-btn">
-            <i class="fas fa-arrow-left"></i>
-        </a>
-      
+        
+        <div id="loadingSpinner" class="ring" style="visibility: hidden;">Loading<span></span></div>
+
         <!-- Background shape -->
         <!-- Main content section -->
         <div class="container mt-5">
@@ -83,23 +84,43 @@
                 </div>
                 <form id="uploadForm" enctype="multipart/form-data">
                     <div class="modal-body">
-                        <div class="file-upload-wrapper">
-                            <input type="file" name="document" id="input-file-now-custom" class="file-upload" data-height="500">
-
+                        <!-- File input -->
+                        <div class="form-group">
+                            <label for="fileInput">Select File:</label>
+                            <input type="file" name="document" id="fileInput" class="form-control-file" onchange="updateFileName()" required>
                         </div>
-                        <div class="form-group mt-3">
+                
+                        <!-- Filename input (obtained from the file) -->
+                        <div class="form-group">
+                            <label for="filenameInput">Filename:</label>
+                            <input type="text" name="filename" id="filenameInput" class="form-control" readonly required>
+                        </div>
+                
+                        <!-- File type selection -->
+                        <div class="form-group">
+                            <label for="fileTypeInput">File Type:</label>
+                            <input type="text" name="fileType" id="fileTypeInput" class="form-control" readonly required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fileTypeInput">Category Of File:</label>
+                            <input type="text" name="Category" id="Category" value="Educational" class="form-control" readonly required>
+                        </div>
+                
+                        <!-- Password input -->
+                        <div class="form-group">
                             <label for="password1">Password:</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="userpassword" name="password1">
+                                <input type="password" class="form-control" id="userpassword" name="password1" required>
                                 <button class="btn btn-outline-secondary" type="button" id="togglePassword1">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="form-group mt-3">
+                        <!-- Confirm Password input -->
+                        <div class="form-group">
                             <label for="password2">Confirm Password:</label>
                             <div class="input-group">
-                                <input type="password" class="form-control" id="userConfirmPass"  name="password2">
+                                <input type="password" class="form-control" id="userConfirmPass"  name="password2" required>
                                 <button class="btn btn-outline-secondary" type="button" id="togglePassword2">
                                     <i class="fas fa-eye"></i>
                                 </button>
@@ -111,14 +132,61 @@
                         <button type="submit" class="btn btn-primary">Upload</button>
                     </div>
                 </form>
+                
             </div>
         </div>
     </div>
+
+    <!--pOp up div on sucessupload-->
+    
+    <!---Modal -->
+    </div>
+
+
+    <div id="popup" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-success" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M17.707 2.293a1 1 0 010 1.414l-10 10a1 1 0 01-1.414 0l-5-5a1 1 0 011.414-1.414L7 11.586l9.293-9.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <h2 class="text-xl font-semibold text-gray-800 mt-4 mb-2">Document Uploaded Successfully</h2>
+                    <p class="text-gray-600">Your document has been uploaded successfully.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
   
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-    <script src = "assets/scripts/passWordValidation.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <script src="assets/scripts/passWordValidation.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function updateFileName() {
+    const fileInput = document.getElementById('fileInput');
+    const filenameInput = document.getElementById('filenameInput');
+    const fileTypeInput = document.getElementById('fileTypeInput');
+    
+    if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        const fileType = '.' + fileName.split('.').pop(); // Get file extension
+        
+        filenameInput.value = fileName.replace(fileType, ''); // Set filename without extension
+        fileTypeInput.value = fileType; // Set file type
+    } else {
+        filenameInput.value = '';
+        fileTypeInput.value = '';
+    }
+}
+
+    </script>
 </body>
 </html>

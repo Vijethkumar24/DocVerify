@@ -7,69 +7,84 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/styles/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Add any additional CSS files here -->
 </head>
 
 <body>
-   
-    <!-- Section: Design Block -->
-    <section class="background-radial-gradient" style="width: 100vw; height: 100vh;">
-        <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-6">
-            <div class="row gx-lg-5 align-items-center mb-5">
-                <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-                    <h2 class="my-4 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+    <body class="bg-gray-900 flex justify-center items-center h-screen w-screen">
+        <section class="container mx-auto px-4 py-5">
+            <div class="flex  items-center gap-8">
+    
+                <!-- Left Section (Title & Description) -->
+                <div class="w-full md:w-5/12 text-center md:text-left">
+                    <h2 class="text-4xl font-bold text-white">
                         Secure Your Documents<br>
-                        <span style="color: hsl(218, 81%, 75%)">With Our Help</span>
+                        <span class="text-blue-400">With Our Help</span>
                     </h2>
-                    <p class="mb-3 opacity-70" style="color: hsl(218, 81%, 85%)">
-                        Protect your documents from counterfeiting with blockchain. Our solution encrypts and hashes files for tamper-proof
-                        verification. Smart contracts ensure seamless verification. Enter the document's ID to instantly validate its
-                        integrity against the blockchain-stored hash. Trust in our secure platform for document authenticity and peace of
-                        mind.
+                    <p class="mt-4 text-gray-300">
+                        Protect your documents from counterfeiting with blockchain. Our solution encrypts and hashes files for tamper-proof verification.
                     </p>
                 </div>
-                <div class="col-lg-6 mb-6 mb-lg-0 position-relative">
-                    <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
-                        Login<br>
-                    </h1>
-                    <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
-                    <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
-                    <div class="card bg-glass">
-                        <div class="card-body px-4 py-5 px-md-5">
-                            <form>
-                                <!-- MetaMask logo -->
-                                <div id="fox-container">
-                                    <img id="fox-image" src="/assets/images/MetaMask_Fox.svg.png" alt="MetaMask Logo">
-                                </div>
-                                <!-- Connect MetaMask button -->
-                                <button id="connectButton"  type="button" class="btn btn-primary btn-block mb-4">
-                                    Connect MetaMask Wallet</button>
-                                <div id="accountDetails"></div>
-                                <!-- Link to MetaMask support -->
-                                <a href="https://support.metamask.io/hc/en-us/articles/360015489531-Getting-started-with-MetaMask">
-                                    <p>Don't have a MetaMask Account?</p>
-                                </a>
-                                <!-- Register buttons -->
-                            </form>
+    
+                <!-- Center (MetaMask Login) -->
+                <div class="w-full md:w-3/12 flex justify-center">
+                    <div class="bg-white p-4 rounded-lg shadow-lg w-96 ">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3 text-center">Login</h3>
+                        <div class="flex justify-center mb-2">
+                            <img src="/assets/images/MetaMask_Fox.svg.png" alt="MetaMask Logo" class="w-23 h-23">
                         </div>
+                        <button id="connectButton" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg">
+                            Connect MetaMask Wallet
+                        </button>
+                        <div id="accountDetails" class="mt-2 text-center text-gray-700"></div>
+                        <a href="https://support.metamask.io/hc/en-us/articles/360015489531-Getting-started-with-MetaMask" class="block mt-2 text-blue-500 text-center">
+                            Don't have a MetaMask Account?
+                        </a>
                     </div>
                 </div>
+    
+                <!-- Right Section (Steps) -->
+                <div class="w-full md:w-4/12 text-center md:text-left">
+                    <h4 class="text-xl font-bold text-white">How to Use:</h4>
+                    <ol class="mt-4 text-gray-300 space-y-2">
+                        <li>Download <a href="https://metamask.io/download/" target="_blank" class="text-yellow-400">MetaMask</a>.</li>
+                        <li>Add the MetaMask extension to your browser.</li>
+                        <li>Log in or create a new MetaMask wallet.</li>
+                        <li>Change the network to Sepolia:</li>
+                        <ul class="ml-5 list-disc text-gray-400">
+                            <li>Open MetaMask.</li>
+                            <li>Click on the network dropdown.</li>
+                            <li>Enable "Show test networks" in settings.</li>
+                            <li>Select "Sepolia Test Network."</li>
+                        </ul>
+                        <li>Go to <a href="https://cloud.google.com/application/web3/faucet/ethereum/sepolia" target="_blank" class="text-yellow-400">Sepolia Faucet</a>.</li>
+                        <li>Select Ethereum Sepolia.</li>
+                        <li>Paste your wallet address to receive Sepolia test ETH.</li>
+                        <li>Use the test ETH to upload your document securely.</li>
+                    </ol>
+                </div>
+    
             </div>
-        </div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.6/web3.min.js"></script>
+        <script src="assets/scripts/connectWithWallet.js"></script>
+
+    
+        
     </section>
-    <!-- Section: Design Block -->
-    
-    <!-- MDB JS -->
-    
-    
-    <!-- Add your custom scripts here -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.6/web3.min.js"></script>
     <script src="assets/scripts/connectWithWallet.js"></script>
 </body>
+
+
+
+
 </html>

@@ -7,12 +7,51 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
 import { readFile } from "fs/promises";
+import DocumentRegistryABI from "./build/contracts/DocumentRegistry.json" assert { type: "json" };
+import AWS from "aws-sdk";
+import session from "express-session";
+import bodyParser from "body-parser";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
+dotenv.config();
+//Add your Sepolia
+
+let userAddress;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// app.use(express.urlencoded({ extended: true }));
+
+const generateSecureKey = () => {
+  return crypto.randomBytes(32).toString("hex");
+};
+const secureKey = generateSecureKey();
+//session
+app.use(
+  session({
+    secret: secureKey, // Change this to a secure key
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+//generate secure key for login
+const ipfs = IPFS.create({ host: "localhost", port: 5001, protocol: "http" });
+
+const isLoggedIn = (req, res, next) => {
+  if (req.session.userAddress) {
+    next();
+  } else {
+    res.redirect("/");
+  }
+};
 
 // Serve static content from the "public" directory
 app.use("/public", express.static(path.join(__dirname, "public")));
@@ -23,13 +62,18 @@ app.use(express.static(path.join(__dirname, "assets/images")));
 app.use(express.static(path.join(__dirname, "assets/styles")));
 app.use(express.static(path.join(__dirname, "assets/scripts")));
 
-const port = 3001;
+const port = 3000;
 app.use(express.json());
-
-const ipfs = IPFS.create({ host: "localhost", port: 5001, protocol: "http" });
 
 const upload = multer({ dest: "uploads/" });
 
+const filebaseClient = new AWS.S3({
+  accessKeyId: process.env.FILEBASE_ACCESS_KEY, // Your Filebase Access Key
+  secretAccessKey: process.env.FILEBASE_SECRET_KEY, // Your Filebase Secret Key
+  endpoint: "https://s3.filebase.com", // Filebase endpoint
+  s3ForcePathStyle: true, // Required for Filebase
+  signatureVersion: "v4", // Signature version for requests
+});
 function deriveKeyFromPassword(password) {
   const passwordBuffer = Buffer.from(password, "utf-8");
 
@@ -67,7 +111,25 @@ function encryptData(data, key) {
     }
   });
 }
+async function retrieveDataFromFilebase(cid) {
+  try {
+    const params = {
+      Bucket: process.env.FILEBASE_BUCKET, // Bucket stored in .env
+      Key: cid, // Retrieve this from blockchain
+    };
+    // Use the Filebase API to retrieve the file using the CID
+    const file = await filebaseClient.getObject(params).promise();
 
+    if (!file) {
+      throw new Error("File not found on Filebase");
+    }
+
+    return Buffer.from(file.Body);
+  } catch (error) {
+    console.error("Error retrieving data from Filebase:", error);
+    throw error;
+  }
+}
 async function retrieveDataFromIPFS(cid) {
   const chunks = [];
   try {
@@ -107,25 +169,19 @@ async function calculateHash(filePath) {
 }
 
 app.post("/retrieve", async (req, res) => {
-  const cid = req.body.cid;
-  const password = req.body.password;
-  const ivHex = req.body.iv; // IV received as hex string
+  const { filename, fileType, cid, iv, password, documentHash } = req.body;
 
   try {
-    if (!cid || !password || !ivHex) {
+    if (!cid || !password || !iv) {
       throw new Error("Missing required parameters (CID, password, IV)");
     }
-
-    const encryptedData = await retrieveDataFromIPFS(cid); // Wait for IPFS data retrieval
+    const encryptedData = await retrieveDataFromFilebase(cid); // Wait for IPFS data retrieval
     const key = deriveKeyFromPassword(password);
-    const iv = Buffer.from(ivHex, "hex"); // Convert hex string to Buffer
+    const newIv = Buffer.from(iv, "hex"); // Convert hex string to Buffer
 
-    const decryptedData = await decryptData(encryptedData, key, iv);
+    const decryptedData = await decryptData(encryptedData, key, newIv);
 
-    res.setHeader(
-      "Content-Disposition",
-      "attachment; filename=decrypted_file.txt"
-    );
+    res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
     res.setHeader("Content-Type", "application/octet-stream");
     res.send(decryptedData);
   } catch (error) {
@@ -135,42 +191,80 @@ app.post("/retrieve", async (req, res) => {
       .send("Error retrieving and decrypting file: " + error.message);
   }
 });
-
-app.post("/uploads", upload.single("document"), async (req, res) => {
-  console.log("hello");
+app.get("/getContractAddress", async (req, res) => {
+  const contractAddress = process.env.CONTRACT_ADDRESS;
+  if (!contractAddress)
+    return res.status(500).send("Contract address not found");
+  res.json({ contractAddress });
+});
+app.get("/getInfuraUrl", async (req, res) => {
+  const infuraurl = process.env.INFURA_URL;
+  if (!infuraurl) return res.status(500).send("Infura url not found");
+  res.json({ infuraurl });
+});
+app.post("/getDocHash", upload.single("document"), async (req, res) => {
   const file = req.file;
-  console.log(file);
-  const password = req.body.password1; // Corrected to match form field name
+  hash = await calculateHash(file.path);
+  const Docabi = DocumentRegistryABI.abi;
+  res.json({ hash, Docabi });
+});
 
+let hash;
+app.post("/uploads", upload.single("document"), async (req, res) => {
+  const file = req.file;
+  const password = req.body.password1;
+  // Corrected to match form field name
+  const fileName = req.file.originalname; // Corrected to get the original file name
+  const fileType = req.file.mimetype;
+  const fileCategory = req.body.Category;
+  const Docabi = DocumentRegistryABI.abi;
   try {
     // Calculate the hash of the uploaded document
-    const hash = await calculateHash(file.path);
+    hash = await calculateHash(file.path);
 
+    // Send document details to contract
     const fileData = await readFile(file.path);
-    const key = deriveKeyFromPassword(password);
-    const { iv, encryptedData } = await encryptData(fileData, key);
+    const Dockey = deriveKeyFromPassword(password);
+    const { iv, encryptedData } = await encryptData(fileData, Dockey);
 
     // Store the hash along with the encrypted data on IPFS
-    const { cid } = await ipfs.add(encryptedData);
 
     // Logging info
-    console.log(cid);
-    console.log(iv.toString("hex"));
-    console.log(key);
-    console.log("Hash of the uploaded document:", hash);
+    const filebaseBucket = "myipfsbucket";
+    const filebaseKey = `documents/${fileName}`;
+    const uploadParams = {
+      Bucket: filebaseBucket,
+      Key: filebaseKey,
+      Body: encryptedData, // Must be a Buffer or Stream
+    };
 
-    res.json({ cid, iv: iv.toString("hex"), hash }); // Send IV and hash in response
+    const filebaseResponse = await filebaseClient
+      .upload(uploadParams)
+      .promise();
+    // Retrieve the CID (hash) from Filebase
+    const cid = filebaseResponse.Key;
+    const resCid = cid;
+    res.json({
+      fileName,
+      fileType,
+      fileCategory,
+      resCid,
+      iv: iv.toString("hex"),
+      hash,
+      Docabi,
+      password,
+    });
+    // Send IV and hash in response
   } catch (error) {
     console.error("Error uploading and encrypting file:", error);
     res.status(500).send("Error uploading and encrypting file");
   }
 });
 
-let userAddress;
 // Serve index.html when root URL is accessed
 app.post("/", (req, res) => {
   userAddress = req.body.userAddress;
-  console.log(userAddress);
+  req.session.userAddress = userAddress;
   if (userAddress) {
     // Redirect to the home page after fetching the account address
     res.redirect("/home");
@@ -179,22 +273,93 @@ app.post("/", (req, res) => {
     res.status(400).send("User address not found.");
   }
 });
-app.get("/getWalletAddress", (req, res) => {
-  // Replace this with your actual logic to fetch the wallet address
-  const walletAddress = userAddress; // Example wallet address
+
+//get All transctions
+app.get("/etherscan-data", async (req, res) => {
+  try {
+    const address = req.query.address;
+    const etherscanUrl = `https://sepolia.etherscan.io/address/${address}`;
+    const response = await fetch(etherscanUrl);
+    const html = await response.text();
+    res.send(html);
+  } catch (error) {
+    console.error("Error fetching data from Etherscan:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.get("/getWalletAddress", async (req, res) => {
+  // Get userAddress from session
+  const walletAddress = req.session.userAddress;
   // Send the wallet address data as JSON response
   res.json({ walletAddress });
+});
+
+// Route to handle form submissions
+app.post("/send-message", upload.none(), (req, res) => {
+  // Get form data
+  const { name, email, subject, message } = req.body;
+  // Create transporter
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.USER_APP_EMAIL,
+      pass: process.env.USER_APP_PASS,
+    },
+  });
+
+  // Email options
+  const mailOptions = {
+    from: email,
+    to: process.env.USER_APP_EMAIL, // Change this to your admin email address
+    subject: subject,
+    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+  };
+
+  // Send email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send("Failed to send message. Please try again later.");
+    } else {
+      res.send("Message sent successfully.");
+    }
+  });
+});
+
+app.get("/getdocHash", async (req, res) => {
+  // Replace this with your actual logic to fetch the wallet address
+  const Dochash = hash; // Example wallet address
+  // Send the wallet address data as JSON response
+  res.json({ Dochash });
 });
 
 app.get("/", (req, res) => {
   // Render the home page
   res.sendFile(path.join(__dirname, "source", "login.html"));
 });
+app.get("/userVerfiedDoc", (req, res) => {
+  // Render the home page
+  res.sendFile(path.join(__dirname, "source", "userVerfiedDocumnets.html"));
+});
 app.get("/home", (req, res) => {
   // Render the home page
   res.sendFile(path.join(__dirname, "source", "home.html"));
 });
 
+//fetct contract abi
+app.get("/getContractABI", async (req, res) => {
+  const resABI = DocumentRegistryABI.abi;
+  res.json({ resABI });
+});
+
+app.get("/verify", (req, res) => {
+  // Render the home page
+  res.sendFile(path.join(__dirname, "source", "userVerfiedDocumnets.html"));
+});
 // Serve uploadDoc.html when /uploadDoc URL is accessed
 app.get("/uploadDoc", (req, res) => {
   res.sendFile(path.join(__dirname, "source", "uploadDoc.html"));

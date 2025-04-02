@@ -11,6 +11,7 @@ body {
   left: -130px;
   background: radial-gradient(#44006b, #ad1fff);
   overflow: hidden;
+  z-index: 50;
 }
 
 #radius-shape-2 {
@@ -108,6 +109,7 @@ body {
   height: 80px; /* Adjust the size of the bubbles */
   background: radial-gradient(#44006b, #ad1fff);; /* Adjust the color of the bubbles */
   border-radius: 50%;
+  z-index: -1;
   animation: floatBubble 4s infinite ease-in-out; /* Adjust the duration and timing function */
 }
 
@@ -127,18 +129,25 @@ body {
 .bubble:nth-child(1) {
   left: 20%;
   top:10%;
+  position: absolute;
+  z-index: -1; 
   animation-delay: 1s; /* Adjust the delay for staggered animation */
 }
 
 .bubble:nth-child(2) {
-  left: 50%;
+  left: 90%;
+  bottom: 10%;
+  position: absolute;
+  z-index: -1; 
   animation-delay: 2s; /* Adjust the delay for staggered animation */
 }
 
 .bubble:nth-child(3) {
-  left: 90%;
-  top:8%;
-  animation-delay: 3s; /* Adjust the delay for staggered animation */
+  position: absolute; /* Ensure it can use z-index */
+  left: 80%;
+  top: 8%;
+  z-index: -1; /* Make sure it's on top of everything */
+  animation-delay: 3s; /* Staggered animation */
 }
 /* .bubble:nth-child(4) {
   left: 95%;
@@ -147,10 +156,15 @@ body {
 .bubble:nth-child(5) {
   left: 10%;
   top:10%;
+  position: absolute;
+  z-index: -1; 
   animation-delay: 3s; /* Adjust the delay for staggered animation */
 }
 .bubble:nth-child(6) {
   left: 30%;
   top:50%;
+  position: absolute;
+  z-index: -1; 
+
   animation-delay: 3s; /* Adjust the delay for staggered animation */
 }

@@ -186,7 +186,8 @@
 .previous-page-btn:hover {
         /* Darker shade of blue */
         transform: translateX(-20px); 
-        background-color: #b30000;
+        background-color: #ffffff;
+        color: aqua;
 }
 
 @keyframes floatUpDown {
@@ -208,4 +209,4 @@
 #radius-shape-2 {
   animation: floatUpDown 3s infinite ease-in-out;
 }
- 
+
