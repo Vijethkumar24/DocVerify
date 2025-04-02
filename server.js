@@ -395,12 +395,6 @@ app.get("/uploadDoc", (req, res) => {
   res.sendFile(path.join(__dirname, "source", "uploadDoc.html"));
 });
 const PORT = process.env.PORT || 3000;
-app.use((err, req, res, next) => {
-  console.error("Unhandled error:", err.stack);
-  res
-    .status(500)
-    .json({ message: "Internal Server Error", error: err.message });
-});
 
 app.listen(PORT, () => {
   try {

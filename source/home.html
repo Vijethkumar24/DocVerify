@@ -430,7 +430,6 @@
         .then(data => {
           const walletAddress = data.walletAddress;
           document.getElementById("walletAddress").innerText = walletAddress;
-          document.getElementById("walletAddressDesktop").innerText = walletAddress;
         })
         .catch(error => console.error("Error:", error));
     }
