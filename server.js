@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
 import { readFile } from "fs/promises";
+import MemoryStore from "memorystore";
 import DocumentRegistryABI from "./build/contracts/DocumentRegistry.json" assert { type: "json" };
 import {
   S3Client,
