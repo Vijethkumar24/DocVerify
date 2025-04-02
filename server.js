@@ -401,5 +401,5 @@ app.listen(PORT, () => {
     console.log("Error connecting to reddis");
   }
   const railwayHost = process.env.RAILWAY_PUBLIC_DOMAIN || `localhost:${PORT}`;
-  console.log(`Server is running on https://${railwayHost}`);
+  console.log(`Server is running on https://${railwayHost}/`);
 });
