@@ -16,14 +16,16 @@ import nodemailer from "nodemailer";
 import { RedisStore } from "connect-redis";
 
 import dotenv from "dotenv";
+import MemoryStore from "memorystore";
 
-import { createClient } from "redis";
+const MemoryStoreInstance = MemoryStore(session);
+// import { createClient } from "redis";
 dotenv.config();
-const redisClient = createClient({
-  url: "redis://localhost:6379",
-  legacyMode: true,
-});
-redisClient.connect().catch(console.error);
+// const redisClient = createClient({
+//   url: "redis://localhost:6379",
+//   legacyMode: true,
+// });
+// redisClient.connect().catch(console.error);
 let userAddress;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -36,8 +38,8 @@ app.use(bodyParser.json());
 
 app.use(
   session({
-    store: new RedisStore({
-      client: redisClient,
+    store: new MemoryStoreInstance({
+      checkPeriod: 86400000, // Prune expired entries every 24 hours
     }),
     resave: false,
     saveUninitialized: false,
