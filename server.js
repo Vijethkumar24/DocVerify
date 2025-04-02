@@ -205,7 +205,10 @@ app.post("/retrieve", async (req, res) => {
     if (!cid || !password || !iv) {
       throw new Error("Missing required parameters (CID, password, IV)");
     }
-    const encryptedData = await uploadFileToS3(cid); // Wait for IPFS data retrieval
+    const encryptedData = await retrieveFileFromS3(
+      process.env.FILEBASE_BUCKET,
+      cid
+    ); // Wait for IPFS data retrieval
     const key = deriveKeyFromPassword(password);
     const newIv = Buffer.from(iv, "hex"); // Convert hex string to Buffer
 
@@ -261,16 +264,10 @@ app.post("/uploads", upload.single("document"), async (req, res) => {
 
     // Logging info
     const filebaseBucket = "myipfsbucket";
-    const filebaseKey = `${Date.now()}-${fileName.replace(/\s+/g, "_")}`;
-    const uploadParams = {
-      Bucket: filebaseBucket,
-      Key: filebaseKey,
-      Body: encryptedData, // Must be a Buffer or Stream
-    };
+    const filebaseKey = `documents/${fileName}`;
 
-    const filebaseResponse = await uploadFileToS3
-      .upload(uploadParams)
-      .promise();
+    await uploadFileToS3(filebaseBucket, filebaseKey, encryptedData);
+    const filebaseResponse = { Key: filebaseKey }; // Manually set response
     // Retrieve the CID (hash) from Filebase
     const cid = filebaseResponse.Key;
     const resCid = cid;
