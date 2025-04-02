@@ -18,9 +18,9 @@ import dotenv from "dotenv";
 
 import { createClient } from "redis";
 dotenv.config();
-const redisClient = createClient(
-  process.env.REDIS_URL || "redis://localhost:6379"
-);
+const redisClient = createClient({
+  url: process.env.REDIS_URL || "redis://localhost:6379",
+});
 
 let userAddress;
 
@@ -381,12 +381,12 @@ app.get("/verify", (req, res) => {
 app.get("/uploadDoc", (req, res) => {
   res.sendFile(path.join(__dirname, "source", "uploadDoc.html"));
 });
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
   try {
     await redisClient.connect();
   } catch (error) {
     console.log("Error connecting to reddis");
   }
-  console.log(`Server is running on http://localhost:${PORT}`);
+  const railwayHost = process.env.RAILWAY_PUBLIC_DOMAIN || `localhost:${PORT}`;
+  console.log(`Server is running on https://${railwayHost}`);
 });
