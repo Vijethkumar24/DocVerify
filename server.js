@@ -20,6 +20,7 @@ import { createClient } from "redis";
 dotenv.config();
 const redisClient = createClient({
   url: "redis://localhost:6379",
+  legacyMode: true,
 });
 
 let userAddress;
