@@ -14,11 +14,9 @@ import {
   PutObjectCommand,
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
-
 import session from "express-session";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
-import { RedisStore } from "connect-redis";
 
 import dotenv from "dotenv";
 
