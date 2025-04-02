@@ -58,19 +58,15 @@ const generateSecureKey = () => {
 };
 const secureKey = generateSecureKey();
 //session
-app.set("trust proxy", 1);
+app.set("trust proxy", 1); // trust first proxy
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
-    saveUninitialized: true,
+    secret: "keyboard cat",
     resave: false,
-    maxAge: 1000 * 60 * 15,
-    cookie: {
-      secure: true,
-    },
+    saveUninitialized: true,
+    cookie: { secure: true },
   })
 );
-
 //generate secure key for login
 
 const isLoggedIn = (req, res, next) => {
