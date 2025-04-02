@@ -13,7 +13,6 @@ import session from "express-session";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-import session from "express-session";
 import RedisStore from "connect-redis";
 import { createClient } from "redis";
 dotenv.config();
