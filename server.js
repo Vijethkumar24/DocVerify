@@ -58,13 +58,16 @@ const generateSecureKey = () => {
 };
 const secureKey = generateSecureKey();
 //session
-app.set("trust proxy", 1); // trust first proxy
+const memoryStore = new MemoryStore({
+  checkPeriod: 86400000, // Prune expired entries every 24 hours
+});
 app.use(
   session({
-    secret: "keyboard cat",
+    store: memoryStore,
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true },
+    saveUninitialized: false,
+    secret: process.env.SESSION_SECRET || "fallback_secret",
+    cookie: { secure: process.env.NODE_ENV === "production" },
   })
 );
 //generate secure key for login
