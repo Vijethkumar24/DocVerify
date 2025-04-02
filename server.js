@@ -13,10 +13,26 @@ import session from "express-session";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-
+import session from "express-session";
+import RedisStore from "connect-redis";
+import { createClient } from "redis";
 dotenv.config();
 //Add your Sepolia
+const redisClient = createClient({
+  url: process.env.REDIS_URL || "redis://localhost:6379",
+});
 
+// Ensure Redis connects before using it
+
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient }),
+    secret: process.env.SESSION_SECRET, // Use a strong secret key
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: process.env.NODE_ENV === "production" }, // Secure in production
+  })
+);
 let userAddress;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -364,6 +380,11 @@ app.get("/uploadDoc", (req, res) => {
   res.sendFile(path.join(__dirname, "source", "uploadDoc.html"));
 });
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  try {
+    await redisClient.connect();
+  } catch (error) {
+    console.log("Error connecting to reddis");
+  }
   console.log(`Server is running on http://localhost:${PORT}`);
 });
