@@ -24,7 +24,7 @@ import dotenv from "dotenv";
 import { createClient } from "redis";
 dotenv.config();
 const redisClient = createClient({
-  url: "redis://localhost:6379",
+  url: process.env.REDIS_URL,
   legacyMode: true,
 });
 redisClient.connect().catch(console.error);
@@ -60,9 +60,13 @@ const secureKey = generateSecureKey();
 //session
 app.use(
   session({
-    secret: secureKey, // Change this to a secure key
-    resave: false,
+    secret: process.env.SESSION_SECRET,
     saveUninitialized: true,
+    resave: false,
+    maxAge: 1000 * 60 * 15,
+    cookie: {
+      secure: true,
+    },
   })
 );
 
