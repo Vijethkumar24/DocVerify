@@ -22,8 +22,6 @@ const redisClient = new createClient(
   process.env.REDIS_URL || "redis://localhost:6379"
 );
 
-await redisClient.connect();
-
 // Ensure Redis connects before using it
 
 app.use(
