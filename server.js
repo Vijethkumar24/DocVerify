@@ -8,7 +8,11 @@ import { dirname } from "path";
 import path from "path";
 import { readFile } from "fs/promises";
 import DocumentRegistryABI from "./build/contracts/DocumentRegistry.json" assert { type: "json" };
-import AWS from "aws-sdk";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
 
 import session from "express-session";
 import bodyParser from "body-parser";
@@ -16,16 +20,14 @@ import nodemailer from "nodemailer";
 import { RedisStore } from "connect-redis";
 
 import dotenv from "dotenv";
-import MemoryStore from "memorystore";
 
-const MemoryStoreInstance = MemoryStore(session);
-// import { createClient } from "redis";
+import { createClient } from "redis";
 dotenv.config();
-// const redisClient = createClient({
-//   url: "redis://localhost:6379",
-//   legacyMode: true,
-// });
-// redisClient.connect().catch(console.error);
+const redisClient = createClient({
+  url: "redis://localhost:6379",
+  legacyMode: true,
+});
+redisClient.connect().catch(console.error);
 let userAddress;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -38,8 +40,8 @@ app.use(bodyParser.json());
 
 app.use(
   session({
-    store: new MemoryStoreInstance({
-      checkPeriod: 86400000, // Prune expired entries every 24 hours
+    store: new RedisStore({
+      client: redisClient,
     }),
     resave: false,
     saveUninitialized: false,
@@ -87,7 +89,7 @@ app.use(express.json());
 
 const upload = multer({ dest: "uploads/" });
 
-const filebaseClient = new AWS.S3({
+const s3Client = new S3Client({
   region: "us-east-1",
   endpoint: "https://s3.filebase.com",
   credentials: {
@@ -96,6 +98,22 @@ const filebaseClient = new AWS.S3({
   },
   forcePathStyle: true,
 });
+async function uploadFileToS3(bucket, key, body) {
+  const command = new PutObjectCommand({
+    Bucket: bucket,
+    Key: key,
+    Body: body,
+  });
+  await s3Client.send(command);
+}
+async function retrieveFileFromS3(bucket, key) {
+  const command = new GetObjectCommand({
+    Bucket: bucket,
+    Key: key,
+  });
+  const { Body } = await s3Client.send(command);
+  return Body;
+}
 function deriveKeyFromPassword(password) {
   const passwordBuffer = Buffer.from(password, "utf-8");
 
@@ -185,7 +203,7 @@ app.post("/retrieve", async (req, res) => {
     if (!cid || !password || !iv) {
       throw new Error("Missing required parameters (CID, password, IV)");
     }
-    const encryptedData = await retrieveDataFromFilebase(cid); // Wait for IPFS data retrieval
+    const encryptedData = await uploadFileToS3(cid); // Wait for IPFS data retrieval
     const key = deriveKeyFromPassword(password);
     const newIv = Buffer.from(iv, "hex"); // Convert hex string to Buffer
 
@@ -248,7 +266,7 @@ app.post("/uploads", upload.single("document"), async (req, res) => {
       Body: encryptedData, // Must be a Buffer or Stream
     };
 
-    const filebaseResponse = await filebaseClient
+    const filebaseResponse = await uploadFileToS3
       .upload(uploadParams)
       .promise();
     // Retrieve the CID (hash) from Filebase
