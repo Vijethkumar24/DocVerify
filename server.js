@@ -22,7 +22,7 @@ const redisClient = createClient({
   url: "redis://localhost:6379",
   legacyMode: true,
 });
-
+redisClient.connect().catch(console.error);
 let userAddress;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -383,12 +383,11 @@ app.get("/uploadDoc", (req, res) => {
   res.sendFile(path.join(__dirname, "source", "uploadDoc.html"));
 });
 const PORT = process.env.PORT;
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   try {
   } catch (error) {
     console.log("Error connecting to reddis");
   }
-  await redisClient.connect();
   const railwayHost = process.env.RAILWAY_PUBLIC_DOMAIN || `localhost:${PORT}`;
   console.log(`Server is running on https://${railwayHost}`);
 });
