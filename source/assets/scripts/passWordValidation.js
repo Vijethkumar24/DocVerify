@@ -110,11 +110,14 @@ document
     // Continue with form submission and transaction initiation
     const formData = new FormData(this);
     try {
-      const response = await fetch("/getdocHash", {
-        method: "POST",
-        body: formData,
-        credentials: "include", // This ensures cookies are sent
-      });
+      const response = await fetch(
+        "https://docverify-i7cb.onrender.com/getdocHash",
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include", // This ensures cookies are sent
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to get document hash");
@@ -127,11 +130,14 @@ document
 
       if (!res) {
         try {
-          const response = await fetch("/uploads", {
-            method: "POST",
-            body: formData,
-            credentials: "include", // This ensures cookies are sent
-          });
+          const response = await fetch(
+            "https://docverify-i7cb.onrender.com/uploads",
+            {
+              method: "POST",
+              body: formData,
+              credentials: "include", // This ensures cookies are sent
+            }
+          );
           if (!response.ok) {
             throw new Error("Failed to get document hash");
           }
@@ -195,10 +201,13 @@ async function isFileAlreadyExists(docHash, abi) {
       }
 
       // Your contract address and ABI
-      const contractAddress = await fetch("/getContractAddress", {
-        method: "GET",
-        credentials: "include", // This ensures cookies are sent
-      })
+      const contractAddress = await fetch(
+        "https://docverify-i7cb.onrender.com/getContractAddress",
+        {
+          method: "GET",
+          credentials: "include", // This ensures cookies are sent
+        }
+      )
         .then((response) => response.json())
         .then((data) => data.contractAddress)
         .catch((error) => console.log(error));
@@ -253,10 +262,13 @@ async function initiateTransaction(
       }
 
       // Your contract address and ABI
-      const contractAddress = await fetch("/getContractAddress", {
-        method: "GET",
-        credentials: "include", // This ensures cookies are sent
-      })
+      const contractAddress = await fetch(
+        "https://docverify-i7cb.onrender.com/getContractAddress",
+        {
+          method: "GET",
+          credentials: "include", // This ensures cookies are sent
+        }
+      )
         .then((response) => response.json())
         .then((data) => data.contractAddress)
         .catch((error) => console.log(error));

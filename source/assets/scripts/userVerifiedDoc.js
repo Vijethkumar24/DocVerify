@@ -15,10 +15,13 @@ async function connectMetaMask() {
 // Function to fetch Infura URL
 async function getInfuraUrl() {
   try {
-    const response = await fetch("/getInfuraUrl", {
-      method: "GET",
-      credentials: "include", // This ensures cookies are sent
-    });
+    const response = await fetch(
+      "https://docverify-i7cb.onrender.com/getInfuraUrl",
+      {
+        method: "GET",
+        credentials: "include", // This ensures cookies are sent
+      }
+    );
     const data = await response.json();
     return data.infuraUrl;
   } catch (error) {
@@ -30,10 +33,13 @@ async function getInfuraUrl() {
 // Function to fetch contract address
 async function getContractAddress() {
   try {
-    const response = await fetch("/getContractAddress", {
-      method: "GET",
-      credentials: "include", // This ensures cookies are sent
-    });
+    const response = await fetch(
+      "https://docverify-i7cb.onrender.com/getContractAddress",
+      {
+        method: "GET",
+        credentials: "include", // This ensures cookies are sent
+      }
+    );
     const data = await response.json();
     return data.contractAddress;
   } catch (error) {
@@ -45,10 +51,13 @@ async function getContractAddress() {
 // Function to fetch contract ABI
 async function getContractABI() {
   try {
-    const response = await fetch("/getContractABI", {
-      method: "GET",
-      credentials: "include", // This ensures cookies are sent
-    });
+    const response = await fetch(
+      "https://docverify-i7cb.onrender.com/getContractABI",
+      {
+        method: "GET",
+        credentials: "include", // This ensures cookies are sent
+      }
+    );
     const data = await response.json();
     if (!data.resABI) {
       throw new Error("ABI is missing from response");
@@ -355,10 +364,13 @@ document
 async function fetchFile(documentHash) {
   try {
     // Fetch wallet address
-    const walletAddressResponse = await fetch("/getWalletAddress", {
-      method: "GET",
-      credentials: "include", // This ensures cookies are sent
-    });
+    const walletAddressResponse = await fetch(
+      "https://docverify-i7cb.onrender.com/getWalletAddress",
+      {
+        method: "GET",
+        credentials: "include", // This ensures cookies are sent
+      }
+    );
     const walletAddressData = await walletAddressResponse.json();
     const walletAddress = walletAddressData.walletAddress;
 
@@ -395,7 +407,7 @@ async function fetchFile(documentHash) {
       };
       Swal.showLoading();
       // Make a POST request to your backend endpoint
-      fetch("/retrieve", {
+      fetch("https://docverify-i7cb.onrender.com/retrieve", {
         method: "POST",
         credentials: "include", // Ensures cookies are sent
         headers: {
