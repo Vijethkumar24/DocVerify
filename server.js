@@ -19,7 +19,7 @@ import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import cors from "cors";
+
 dotenv.config();
 // const redisClient = createClient({
 //   url: process.env.REDIS_URL,
@@ -55,12 +55,7 @@ app.use(cookieParser());
 const generateSecureKey = () => {
   return crypto.randomBytes(32).toString("hex");
 };
-app.use(
-  cors({
-    origin: "https://xdocverify.netlify.app", // allow only your Netlify domain
-    credentials: true, // allow cookies/session to be sent
-  })
-);
+
 const secureKey = generateSecureKey();
 //session
 const MemoryStoreInstance = MemoryStore(session);
