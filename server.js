@@ -331,6 +331,9 @@ app.get("/etherscan-data", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+app.get("/ping", (req, res) => {
+  res.send("OK");
+});
 
 app.get("/getWalletAddress", async (req, res) => {
   // Get userAddress from session
